@@ -6,4 +6,5 @@ RewriteCond %{REQUEST_FILENAME} -d [OR]
 RewriteCond $1 ^(robots\.txt|favicon\.ico|style\.css)
 RewriteRule ^(.*)$ - [L]
 # use index.php as front controller ...
-RewriteRule ^(.*)$ ./index.php/$1 [L]  
+RewriteRule ^(.*)$ ./index.php/$1 [L]                    
+                
