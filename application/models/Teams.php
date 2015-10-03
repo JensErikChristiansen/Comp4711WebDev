@@ -10,11 +10,11 @@
 class Teams extends CI_Model {
 
     var $data = array(
-        array('id' => 'NE', 'name' => 'New England Patriots', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/',
+        array('id' => 'NE', 'name' => 'New England Patriots', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/league',
             'wins' => '5', 'losses' => '1', 'ties' => '18'),
-        array('id' => 'PIT', 'name' => 'Pittsburg Steelers', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/',
+        array('id' => 'PIT', 'name' => 'Pittsburg Steelers', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/roster',
             'wins' => '50', 'losses' => '10', 'ties' => '180'),
-        array('id' => 'CLE', 'name' => 'Cleveland Browns', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/',
+        array('id' => 'CLE', 'name' => 'Cleveland Browns', 'logo' => '/assets/data/img/nfl-logo.jpg', 'where'=>'/league',
             'wins' => '25', 'losses' => '5', 'ties' => '9')
     );
 

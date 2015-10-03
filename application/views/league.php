@@ -5,7 +5,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <h1>The League</h1>
-<table>
+<table class="table">
 	<tr>
 		<td>Logo</td>
 		<td>ID</td>
@@ -18,7 +18,7 @@ and open the template in the editor.
 		<tr>
 			<td><img src='{logo}' title='{name}'></td>
 			<td>{id}</td>
-			<td>{name}</td>
+                        <td><a href="{where}">{name}</a></td>
 			<td>{wins}</td>
 			<td>{losses}</td>
 			<td>{ties}</td>
