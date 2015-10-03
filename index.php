@@ -1,4 +1,5 @@
 <?php
+//developer branch
 /**
  * CodeIgniter
  *
@@ -90,15 +91,15 @@ switch (ENVIRONMENT)
 }
 
 /*
- *---------------------------------------------------------------
+ * ---------------------------------------------------------------
  * SYSTEM FOLDER NAME
- *---------------------------------------------------------------
+ * ---------------------------------------------------------------
  *
  * This variable must contain the name of your "system" folder.
  * Include the path if the folder is not in the same directory
  * as this file.
  */
-	$system_path = '../../system3';
+$system_path = '../system3'; //updated
 
 /*
  *---------------------------------------------------------------
@@ -225,7 +226,7 @@ switch (ENVIRONMENT)
 	define('BASEPATH', str_replace('\\', '/', $system_path));
 
 	// Path to the front controller (this file)
-	define('FCPATH', dirname(__FILE__).'/');
+	define('FCPATH', str_replace(SELF, '', __FILE__));
 
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
@@ -290,3 +291,6 @@ switch (ENVIRONMENT)
  * And away we go...
  */
 require_once BASEPATH.'core/CodeIgniter.php';
+
+/* End of file index.php */
+/* Location: ./index.php */
