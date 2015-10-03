@@ -5,7 +5,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <h1>The League</h1>
-<table>
+<table class="table">
 	<tr>
 		<td>Logo</td>
 		<td>ID</td>
