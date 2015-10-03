@@ -15,6 +15,10 @@ class Roster extends Application {
     public function index()
     {
 
+        $this->load->model('rosters');
+        $this->data['rost'] = $this->rosters->all();  
+        
+        
             //$this->load->view('welcome');
         $this->data['pagebody'] = 'roster';
         $this->render();
