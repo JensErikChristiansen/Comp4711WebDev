@@ -8,22 +8,22 @@ and open the template in the editor.
 <table class="table">
 	<tr>
 		<td>Photo</td>
-                <td>Team</td>
-                <td>Number</td>
+        <td>Number</td>
 		<td>Name</td>
-                <td>Position</td>
-		<td>Age</td>
+        <td>Position</td>
+        <td>Status</td>
 		<td>Height</td>
 	</tr>
-	{rost}
+	{roster}
 		<tr>
 			<td><img src='{photo}' title='{name}'></td>
-                        <td>{team}</td>
-                        <td>{num}</td>
-			<td>{name}</td>
-			<td>{position}</td>
-			<td>{age}</td>
-			<td>{height}</td>
+            <td>{No}</td>
+			<td>{Name}</td>
+			<td>{Pos}</td>
+			<td>{Status}</td>
+			<td>{Height}</td>
 		</tr>
-	{/rost}
+	{/roster}
 </table>
+
+<a href="/roster/paginate/3">next</a>
