@@ -234,9 +234,9 @@ class MY_Model extends CI_Model implements Active_Record {
         return $query->result();
     }
 
-        function range($offset, $start) {
+    function range($offset, $start) {
         $this->db->order_by($this->_keyField, 'asc');
-        $query = $this->db->get($this->_tableName, $offset, $start);
+        $query = $this->db->get($this->_tableName, $offset, $start - 1);
         return $query->result();
     }
     
