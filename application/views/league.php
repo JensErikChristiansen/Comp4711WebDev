@@ -13,15 +13,17 @@ and open the template in the editor.
 		<td>Wins</td>
 		<td>Losses</td>
 		<td>Ties</td>
+		<td>League</td>
 	</tr>
 	{teams}
 		<tr>
 			<td><img src='{logo}' title='{name}'></td>
-			<td>{id}</td>
-                        <td><a href="{where}">{name}</a></td>
-			<td>{wins}</td>
-			<td>{losses}</td>
-			<td>{ties}</td>
+			<td>{ID}</td>
+            <td><a href="{where}">{TeamName}</a></td>
+			<td>{W}</td>
+			<td>{L}</td>
+			<td>{T}</td>
+			<td>{League}</td>
 		</tr>
 	{/teams}
 </table>
