@@ -234,12 +234,6 @@ class MY_Model extends CI_Model implements Active_Record {
         return $query->result();
     }
 
-    function range($offset, $start) {
-        $this->db->order_by($this->_keyField, 'asc');
-        $query = $this->db->get($this->_tableName, $offset, $start - 1);
-        return $query->result();
-    }
-    
     // Return all records as a result set
     function results() {
         $this->db->order_by($this->_keyField, 'asc');
@@ -264,7 +258,7 @@ class MY_Model extends CI_Model implements Active_Record {
         $query = $this->db->get($this->_tableName);
         $result = $query->result();
         if (count($result) > 0)
-            return $result[0]->num;
+            return $result[0]->ID;
         else
             return null;
     }
