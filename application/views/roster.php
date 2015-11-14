@@ -7,7 +7,6 @@ and open the template in the editor.
 <h1>Steelers Roster</h1>
 <a href="roster/displayView/gallery">display gallery</a><br>
 
-
 {theview}
 
 
