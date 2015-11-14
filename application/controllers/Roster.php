@@ -12,10 +12,12 @@
  * @author Rosanna Wubs and Nadia Dobrianskaia (pair programming)
  */
 class Roster extends Application {
+    // calls method page() with parameter 1 passed into it.. basically if no session was loaded just display a table view starting at record 1
     public function index()
     {
         $this->page(1);
     }
+
 
     function page($pagenum) {     
         //$this->load->library('pagination'); moved this to autoload
@@ -47,39 +49,46 @@ class Roster extends Application {
 
     function displayTable($arr) {
     	foreach($arr as $row) {
-                    $cells[] = $this->parser->parse('_tableRow', (array) $row, true);
-		}
-		$this->load->library('table');
-		$parms = array(
-			'table_open' => '<table class="table">',
-			'cell_start' => '<td>',
-			'cell_alt_start' => '<td>'
-		);
-		$this->table->set_template($parms);
-		$rows = $this->table->make_columns($cells, 1);
-                $this->table->set_heading('Photo', 'Number', 'Name', 'Position','Status', 'Height');
-		$this->data['theview'] = $this->table->generate($rows);
+            $cells[] = $this->parser->parse('_tableRow', (array) $row, true);
+        }
+
+        $this->load->library('table');
+        $parms = array(
+            'table_open' => '<table class="table">',
+            'cell_start' => '<td>',
+            'cell_alt_start' => '<td>'
+
+        );
+        $this->table->set_template($parms);
+
+        $rows = $this->table->make_columns($cells, 1);
+        $this->table->set_heading('Number', 'Name', 'Position','Status', 'Height');
+        //$this->data['Row'] = $this->table->generate($rows);
+        //$this->data['Row'] = $cells;
+        //$this->data['tableContent'] =$this->parser->parse('_table', $this->data, true);	
+        $this->data['theview'] = $this->table->generate($rows);
     }
 
     function displayGallery($arr) {
     	//$pix = $this->images->all();
 
-		foreach($arr as $row) {
-			$cells[] = $this->parser->parse('_gallery', (array) $row, true);
-		}
+        foreach($arr as $row) {
+            $cells[] = $this->parser->parse('_gallery', (array) $row, true);
+        }
 
-		$this->load->library('table');
-		$parms = array(
-			'table_open' => '<table class="gallery">',
-			'cell_start' => '<td class="oneimage">',
-			'cell_alt_start' => '<td class="oneimage">'
-		);
-		$this->table->set_template($parms);
+        $this->load->library('table');
+        $parms = array(
+            'table_open' => '<table class="gallery">',
+            'cell_start' => '<td class="oneimage">',
+            'cell_alt_start' => '<td class="oneimage">'
+        );
+        $this->table->set_template($parms);
 
-		$rows = $this->table->make_columns($cells, 3);
-		$this->data['theview'] = $this->table->generate($rows);
-		//$this->data['theview'] = $cells;
+        $rows = $this->table->make_columns($cells, 3);
+        $this->data['theview'] = $this->table->generate($rows);
+        //$this->data['theview'] = $cells;
     }
+    
 
     function layout($layout){
         if($layout == 0){
