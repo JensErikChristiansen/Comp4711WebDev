@@ -17,10 +17,5 @@ class Rosters extends MY_Model {
     public function __construct() {
         parent::__construct('roster', 'ID');
     }
-    
-    function get_by_range(){
-        $query = $this->db->get('roster', $pagingConfig['per_page'], (($page-1) * $pagingConfig['per_page']));
-        return $query->result();
-    }
 
 }

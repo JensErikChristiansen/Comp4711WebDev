@@ -5,7 +5,12 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <h1>Steelers Roster</h1>
-<table class="table">
+<a href="roster/displayView/gallery">display gallery</a><br>
+
+{theview}
+
+
+<!-- <table class="table">
 	<tr>
 		<td>Photo</td>
         <td>Number</td>
@@ -16,7 +21,7 @@ and open the template in the editor.
 	</tr>
 	{roster}
 		<tr>
-			<td><img src='{photo}' title='{name}'></td>
+			<td><img src="/assets/data/img/{Photo}" title='{name}'></td>
             <td>{No}</td>
 			<td>{Name}</td>
 			<td>{Pos}</td>
@@ -25,5 +30,4 @@ and open the template in the editor.
 		</tr>
 	{/roster}
 </table>
-
-<a href="/roster/paginate/3">next</a>
+ -->
