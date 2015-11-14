@@ -5,7 +5,9 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <h1>Steelers Roster</h1>
-<a href="roster/displayView/gallery">display gallery</a><br>
+
+<a href="/roster/layout/0" class="btn btn-large btn-primary"> Table  Display </a><br>
+<a href="/roster/layout/1" class="btn btn-large btn-primary">Gallery Display</a><br>
 
 {theview}
 
