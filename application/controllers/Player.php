@@ -22,6 +22,9 @@ class Player extends Application {
         //order_num got changed to player_id
         $player_id = $this->rosters->highest() +1;
         $newplayer = $this->rosters->create();
+       
+        //from a form get all the player info
+        //validate our form
         $newplayer->ID = $player_id;
         $newplayer->PlayerNo = 101;
         $newplayer->Name = 'John, Doe';
@@ -37,19 +40,34 @@ class Player extends Application {
         $newplayer->PlayerUpdated = 'e';
         
         
-        $this->rosters->add($newplayer);
+        $this->rosters->add($newplayer); //add this to our buffer
         redirect('/player/display_player/' . $player_id);
         
        
     }
 
     // add to an order
-    function display_player($order_num = null) {
-        if ($order_num == null)
+    function display_player($player_id = null) {
+        if ($player_id == null)
             redirect('/player/newplayer');
 
-        $this->data['pagebody'] = 'player_edit';
-/*        $this->data['order_num'] = $order_num;
+        $this->data['pagebody'] = 'player';
+        
+        $player = array();
+        $player = $this->rosters->get($player_id);
+                
+        $this->data['Name'] = $player->Name;
+        $this->data['Photo'] = $player->Photo;
+        $this->data['PlayerNo'] = $player->PlayerNo;
+        $this->data['Pos'] = $player->Pos;
+        $this->data['Status'] = $player->Status;
+        $this->data['Height'] = $player->Height;
+        $this->data['Weight'] = $player->Weight;
+        $this->data['Birthdate'] = $player->Birthdate;
+        $this->data['Experience'] = $player->Experience;
+        $this->data['College'] = $player->College;
+        $this->data['Code'] = $player->Code;
+        /*        $this->data['order_num'] = $order_num;
         
         $order = $this->orders->get($order_num);
         $this->data['title'] = "Order #".$order_num.'('.number_format($this->orders->total($order_num), 2).')';

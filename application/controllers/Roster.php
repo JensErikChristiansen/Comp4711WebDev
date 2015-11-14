@@ -55,17 +55,14 @@ class Roster extends Application {
         $this->load->library('table');
         $parms = array(
             'table_open' => '<table class="table">',
-            'cell_start' => '<td>',
-            'cell_alt_start' => '<td>'
+            
 
         );
         $this->table->set_template($parms);
 
         $rows = $this->table->make_columns($cells, 1);
-        $this->table->set_heading('Number', 'Name', 'Position','Status', 'Height');
-        //$this->data['Row'] = $this->table->generate($rows);
-        //$this->data['Row'] = $cells;
-        //$this->data['tableContent'] =$this->parser->parse('_table', $this->data, true);	
+        $this->table->set_heading('', 'Number', 'Name', 'Position','Status', 'Height');
+        
         $this->data['theview'] = $this->table->generate($rows);
     }
 
