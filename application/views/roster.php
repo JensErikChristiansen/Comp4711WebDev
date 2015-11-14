@@ -9,6 +9,7 @@ and open the template in the editor.
 <a href="/roster/layout/0" class="btn btn-large btn-primary"> Table  Display </a><br>
 <a href="/roster/layout/1" class="btn btn-large btn-primary">Gallery Display</a><br>
 
+<a href="/player/display_player" class="btn btn-large btn-primary">Add New Player</a><br>
 {theview}
 
 
