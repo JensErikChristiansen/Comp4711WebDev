@@ -151,6 +151,13 @@ class MY_Model extends CI_Model implements Active_Record {
         return $query->num_rows();
     }
 
+    function range($offset, $start) {
+        $this->db->order_by($this->_keyField, 'asc');
+        $query = $this->db->get($this->_tableName, $offset, $start - 1);
+        return $query->result();
+    }
+    
+    
     /**
      * Return the field names in this table, from the table metadata.
      * @return array(string) The field names in this table
