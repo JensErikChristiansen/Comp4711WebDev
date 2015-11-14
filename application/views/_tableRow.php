@@ -1,8 +1,7 @@
 <?php
 ?>
 <tr>
-    <td><img src="/assets/data/img/{Photo}"></td>
-    <td>{No}</td>
+    <td>{PlayerNo}</td>
     <td>{Name}</td>
     <td>{Pos}</td>
     <td>{Status}</td>
