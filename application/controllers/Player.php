@@ -93,9 +93,16 @@ class Player extends Application {
         
         $this->data['ID'] = $player->ID;
         $this->data['Photo'] = $player->Photo;
-
-	$this->data['Submit'] = makeSubmitButton('Save', "Click to save",
+        if (isset($_SESSION['editMode'])) {
+             if ($this->session->userdata('editMode')) {
+                $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
                 'btn-success');
+             }
+             else{
+                 $this->data['Submit'] = "";
+             }
+        }else
+            $this->data['Submit'] = "";
         $this->render();
     }
 /*

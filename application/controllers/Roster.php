@@ -59,14 +59,14 @@ class Roster extends Application {
         //set the pagenum into a session variable
         $this->session->set_userdata('displayNumber', $pagenum);
         $this->data['pagebody'] = 'roster';
-        if (!isset($_SESSION['editMode'])) {
-            $this->data['pagebody'] = 'roster';
-        } else {
+        if (isset($_SESSION['editMode'])) {
             if ($this->session->userdata('editMode')) {
                 $this->data['pagebody'] = 'roster_edit';
             } else {
                 $this->data['pagebody'] = 'roster';
             }
+        } else {
+            $this->data['pagebody'] = 'roster';
         }
         
        // $this->data['pagebody'] = 'roster';
