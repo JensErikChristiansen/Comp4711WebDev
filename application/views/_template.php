@@ -26,6 +26,7 @@ and open the template in the editor.
                         <li><a href="/league">League</a></li>
                         <li><a href="/roster">Roster</a></li>
                         <li><a href="/about">About</a></li>
+                        <li><a href="/roster/editMode">Edit Mode</a></li>
                     </ul>
                 </div>
             </nav>

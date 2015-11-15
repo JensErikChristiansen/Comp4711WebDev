@@ -24,6 +24,7 @@ class Welcome extends Application {
 	public function index()
 	{
             
+            $this->session->set_userdata('editPage', '/welcome');
 		//$this->load->view('welcome');
             $this->data['pagebody'] = 'welcome';
             $this->render();

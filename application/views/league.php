@@ -8,20 +8,22 @@ and open the template in the editor.
 <table class="table">
 	<tr>
 		<td>Logo</td>
-		<td>ID</td>
-		<td>Name</td>
-		<td>Wins</td>
-		<td>Losses</td>
+		<td><a href="/league/orderby/id">ID</a></td>
+		<td><a href="/league/orderby/name">Name</a></td>
+		<td><a href="/league/orderby/wins">Wins</a></td>
+		<td><a href="/league/orderby/losses">Losses</a></td>
 		<td>Ties</td>
+		<td>League</td>
 	</tr>
 	{teams}
 		<tr>
-			<td><img src='{logo}' title='{name}'></td>
-			<td>{id}</td>
-                        <td><a href="{where}">{name}</a></td>
-			<td>{wins}</td>
-			<td>{losses}</td>
-			<td>{ties}</td>
+			<td><img src='/assets/data/img/{TeamLogo}' title='{TeamName}'></td>
+			<td>{Code}</td>
+                        <td><a href="{SiteURL}">{TeamName}</a></td>
+			<td>{W}</td>
+			<td>{L}</td>
+			<td>{T}</td>
+			<td>{League}</td>
 		</tr>
 	{/teams}
 </table>

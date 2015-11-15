@@ -5,25 +5,34 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <h1>Steelers Roster</h1>
-<table class="table">
+
+<a href="/roster/layout/0" class="btn btn-large btn-primary"> Table  Display </a><br>
+<a href="/roster/layout/1" class="btn btn-large btn-primary">Gallery Display</a><br>
+<a href="/roster/orderby/playerno" class="btn btn-large btn-primary">Order by Player Number</a><br>
+<a href="/roster/orderby/name" class="btn btn-large btn-primary">Order by Name</a><br>
+<a href="/roster/orderby/position" class="btn btn-large btn-primary">Order by Position</a><br>
+
+{theview}
+
+
+<!-- <table class="table">
 	<tr>
 		<td>Photo</td>
-                <td>Team</td>
-                <td>Number</td>
+        <td>Number</td>
 		<td>Name</td>
-                <td>Position</td>
-		<td>Age</td>
+        <td>Position</td>
+        <td>Status</td>
 		<td>Height</td>
 	</tr>
-	{rost}
+	{roster}
 		<tr>
-			<td><img src='{photo}' title='{name}'></td>
-                        <td>{team}</td>
-                        <td>{num}</td>
-			<td>{name}</td>
-			<td>{position}</td>
-			<td>{age}</td>
-			<td>{height}</td>
+			<td><img src="/assets/data/img/{Photo}" title='{name}'></td>
+            <td>{No}</td>
+			<td>{Name}</td>
+			<td>{Pos}</td>
+			<td>{Status}</td>
+			<td>{Height}</td>
 		</tr>
-	{/rost}
+	{/roster}
 </table>
+ -->

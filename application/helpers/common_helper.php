@@ -72,5 +72,7 @@ function build_menu_bar($choices)
     return $result;
 }
 
+    
+
 /* End of file common_helper.php */
 /* Location: application/helpers/common_helper.php */

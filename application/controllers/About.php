@@ -13,9 +13,8 @@
  */
 class About extends Application {
     public function index()
-    {
-
-            //$this->load->view('welcome');
+    {  
+        $this->session->set_userdata('editPage', '/about');
         $this->data['pagebody'] = 'about';
         $this->render();
     }
