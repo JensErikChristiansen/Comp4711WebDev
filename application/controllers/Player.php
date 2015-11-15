@@ -13,7 +13,7 @@ class Player extends Application {
 
     function __construct() {
         parent::__construct();
-        
+        $this->load->helper('formfields');
     }
 
     // start a new player addition...
@@ -55,26 +55,17 @@ class Player extends Application {
         
         $player = array();
         $player = $this->rosters->get($player_id);
-                
-        $this->data['Name'] = $player->Name;
-        $this->data['Photo'] = $player->Photo;
-        $this->data['PlayerNo'] = $player->PlayerNo;
-        $this->data['Pos'] = $player->Pos;
-        $this->data['Status'] = $player->Status;
-        $this->data['Height'] = $player->Height;
-        $this->data['Weight'] = $player->Weight;
-        $this->data['Birthdate'] = $player->Birthdate;
-        $this->data['Experience'] = $player->Experience;
-        $this->data['College'] = $player->College;
-        $this->data['Code'] = $player->Code;
-        /*        $this->data['order_num'] = $order_num;
+        if (isset($_SESSION['editMode'])) {
+            $editMode = $this->session->userdata('editMode');
+        }
         
-        $order = $this->orders->get($order_num);
-        $this->data['title'] = "Order #".$order_num.'('.number_format($this->orders->total($order_num), 2).')';
-        // Make the columns
-        $this->data['meals'] = $this->make_column('m');
-        $this->data['drinks'] = $this->make_column('d');
-        $this->data['sweets'] = $this->make_column('s');
+        //function makeTextField($label, $name, $value, $explain = "", $maxlen = 40, $size = 25, $disabled = false) {
+
+        foreach ($player as $key => $val) {
+            $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
+        }
+        
+        $this->data['Photo'] = $player->Photo;
 
 	// Bit of a hokey patch here, to work around the problem of the template
 	// parser no longer allowing access to a parent variable inside a

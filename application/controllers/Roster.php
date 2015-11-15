@@ -17,7 +17,25 @@ class Roster extends Application {
     {
         $this->page(1);
     }
-
+    
+    function editMode() {
+        if (!isset($_SESSION['editMode'])) {
+            $this->session->set_userdata('editMode', true);
+        } else {
+            if ($this->session->userdata('editMode')) {
+                $this->session->set_userdata('editMode', false);
+            } else {
+                $this->session->set_userdata('editMode', true);
+            }
+        }
+//        if (!isset($_SESSION['displayNumber'])){
+//            $player = $this->session->userdata('displayNumber');
+//            $this->page($player);
+//        } else {
+//            $this->page(1);
+//        }
+        
+    }
 
     function page($pagenum) {     
         //$this->load->library('pagination'); moved this to autoload

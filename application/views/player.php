@@ -6,22 +6,25 @@ and open the template in the editor.
 -->
 
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-6 img-responsive thumbnail">
         <img src="/assets/data/img/{Photo}">
     </div>
     <div class="col-xs-6">
-        <ul>
-            <li>{Name}</li>
-            <li>{PlayerNo}</li>
-            <li>{Pos}</li>
-            <li>{Status}</li>
-            <li>{Height}</li>
-            <li>{Weight}</li>
-            <li>{Birthdate}</li>
-            <li>{Experience}</li>
-            <li>{College}</li>
-            <li>{Code}</li>
-        </ul>
+        
+        <form action ="/admin/confirm" method="post">
+            {Name}
+            {PlayerNo}
+            {Pos}
+            {Status}
+            {Height}
+            {Weight}
+            {Birthdate}
+            {Experience}
+            {College}
+            {Code}
+            
+            {Submit}
+        </form>
         
     </div>
 </div>
