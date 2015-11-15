@@ -28,6 +28,8 @@ class Roster extends Application {
                 $this->session->set_userdata('editMode', true);
             }
         }
+        
+        //redirect($_SERVER['REQUEST_URI']);
 //        if (!isset($_SESSION['displayNumber'])){
 //            $player = $this->session->userdata('displayNumber');
 //            $this->page($player);
