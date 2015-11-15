@@ -56,16 +56,19 @@ class Player extends Application {
             $player->$key = $value;
         }
         $this->rosters->update($player);
+        redirect('/roster');
     }
     
     function confirm($ID) {
-        if ($ID === null) {
+       /* if ($ID === null) {
             $this->newPlayer();
         } else {
-            $this->updatePlayer($ID);
+            
         }
-        
         redirect('/player/display_player/' . $player_id);
+        
+        */
+        $this->updatePlayer($ID);
     }
 
     // add to an order
