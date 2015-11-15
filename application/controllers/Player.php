@@ -80,8 +80,11 @@ class Player extends Application {
         
         $player = array();
         $player = $this->rosters->get($player_id);
+        
         if (isset($_SESSION['editMode'])) {
             $editMode = $this->session->userdata('editMode');
+        } else {
+            $editMode = FALSE;
         }
         
         //function makeTextField($label, $name, $value, $explain = "", $maxlen = 40, $size = 25, $disabled = false) {

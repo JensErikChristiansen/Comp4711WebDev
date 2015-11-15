@@ -8,6 +8,9 @@ and open the template in the editor.
 
 <a href="/roster/layout/0" class="btn btn-large btn-primary"> Table  Display </a><br>
 <a href="/roster/layout/1" class="btn btn-large btn-primary">Gallery Display</a><br>
+<a href="/roster/orderby/playerno" class="btn btn-large btn-primary">Order by Player Number</a><br>
+<a href="/roster/orderby/name" class="btn btn-large btn-primary">Order by Name</a><br>
+<a href="/roster/orderby/position" class="btn btn-large btn-primary">Order by Position</a><br>
 
 {theview}
 
