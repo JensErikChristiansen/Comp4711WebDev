@@ -36,7 +36,5 @@ and open the template in the editor.
              {content}
             </div>
         </div>
-        {caboose_scripts}
-        {caboose_trailings}
     </body>
 </html>
