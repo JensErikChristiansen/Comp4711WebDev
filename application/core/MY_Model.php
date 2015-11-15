@@ -240,6 +240,13 @@ class MY_Model extends CI_Model implements Active_Record {
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
+    
+        // Return all records as an array of objects
+    function all_ordered_by($what = 'Code') {
+        $this->db->order_by($what, 'asc');
+        $query = $this->db->get($this->_tableName);
+        return $query->result();
+    }
 
     // Return all records as a result set
     function results() {
