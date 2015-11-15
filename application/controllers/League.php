@@ -20,8 +20,8 @@ class League extends Application {
         $this->data['pagebody'] = 'league';
 
         //first see if the session was set if not set display table layout               
-        if(isset($_SESSION['orderby'])){
-            $orderby = $this->session->userdata('orderby');
+        if(isset($_SESSION['orderbyteam'])){
+            $orderby = $this->session->userdata('orderbyteam');
             $this->data['teams'] = $this->teams->all_ordered_by($orderby);
         }
         else
@@ -47,16 +47,16 @@ class League extends Application {
     
     function orderby($orderby){
         if($orderby == "name"){
-             $this->session->set_userdata('orderby', 'TeamName');
+             $this->session->set_userdata('orderbyteam', 'TeamName');
         }
         else if($orderby == "wins") {
-            $this->session->set_userdata('orderby', 'W');
+            $this->session->set_userdata('orderbyteam', 'W');
         }
         else if($orderby == "losses") {
-            $this->session->set_userdata('orderby', 'L');
+            $this->session->set_userdata('orderbyteam', 'L');
         }
         else {
-            $this->session->set_userdata('orderby', 'Code');
+            $this->session->set_userdata('orderbyteam', 'Code');
         }
         $this->index();
     }

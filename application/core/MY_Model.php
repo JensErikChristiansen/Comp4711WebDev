@@ -151,8 +151,8 @@ class MY_Model extends CI_Model implements Active_Record {
         return $query->num_rows();
     }
 
-    function range($offset, $start) {
-        $this->db->order_by($this->_keyField, 'asc');
+    function range_ordered_by($offset, $start, $orderby) {
+        $this->db->order_by($orderby, 'asc');
         $query = $this->db->get($this->_tableName, $offset, $start - 1);
         return $query->result();
     }

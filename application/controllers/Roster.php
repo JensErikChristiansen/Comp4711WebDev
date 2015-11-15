@@ -46,7 +46,8 @@ class Roster extends Application {
         
     }
 
-    function page($pagenum) {     
+    function page($pagenum) {  
+        $orderby;
         //$this->load->library('pagination'); moved this to autoload
         
         //set the pagenum into a session variable
@@ -62,23 +63,33 @@ class Roster extends Application {
             }
         }
 
+        
        // $this->data['pagebody'] = 'roster';
         $config['base_url'] = '/roster/page';
 		$config['total_rows'] = $this->rosters->size();
 		$config['per_page'] = 12;
 		$this->pagination->initialize($config);
-        
+                        //first see if the session was set if not set the order of the display   
+                
+        if(isset($_SESSION['orderbyplayer'])){
+            $orderby = $this->session->userdata('orderbyplayer');
+            //$this->data['teams'] = $this->rosters->all_ordered_by($orderby);
+        }
+        else {
+            $orderby = 'ID';
+             //$this->data['teams'] = $this->rosters->all_ordered_by('Code');
+        }
+
         //first see if the session was set if not set display table layout               
         if(isset($_SESSION['layout'])){
             $layout = $this->session->userdata('layout');
-            if($layout)// session was galery layout
-                $this->displayTable($this->rosters->range($config['per_page'], $pagenum));
+            if($layout)// session was gallery layout
+                $this->displayTable($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
             else
-                $this->displayGallery($this->rosters->range($config['per_page'], $pagenum));
+                $this->displayGallery($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
         }
         else
-            $this->displayTable($this->rosters->range($config['per_page'], $pagenum));
-        
+            $this->displayTable($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
         
         $this->render();
         echo $this->pagination->create_links();
@@ -140,5 +151,21 @@ class Roster extends Application {
         }
         else
             $this->page(1); //if the displayNumber was never set
+    }
+    
+    function orderby($orderby){
+        if($orderby == "playerno"){
+             $this->session->set_userdata('orderbyplayer', 'PlayerNo');
+        }
+        else if($orderby == "name") {
+            $this->session->set_userdata('orderbyplayer', 'Name');
+        }
+        else if($orderby == "position") {
+            $this->session->set_userdata('orderbyplayer', 'Pos');
+        }
+        else {
+            $this->session->set_userdata('orderbyplayer', 'Code');
+        }
+        $this->index();
     }
 }
