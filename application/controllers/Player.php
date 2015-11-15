@@ -67,16 +67,10 @@ class Player extends Application {
         redirect('/player/display_player/' . $player_id);
         
         */
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //something posted
-            ;
-        if (isset($_POST['Cancel'])) {
-               // btnDelete
-            ;
-         } else {
+        
            $this->updatePlayer($ID);
-         }
-}
+         
+
         
        // $buttonType = $this->data['css_extras'];
         
@@ -114,8 +108,8 @@ class Player extends Application {
                 'btn-success');
                 $this->data['Cancel'] = makeCancelButton('Cancel', "Click to cancel",
                 'btn-cancel');
-                $this->data['Delete'] = makeSubmitButton('Delete', "Click to delete",
-                'btn-success');
+                $this->data['Delete'] = makeDeleteButton('Delete', "Click to delete",
+                'btn-danger', $player->ID);
                 $buttonType = $this->data['Submit'];
                 //$buttonType = $this->data['Cancel'];
                 
@@ -135,6 +129,11 @@ class Player extends Application {
     
     function cancel(){
         redirect('/roster');
+    }
+    
+    function delete($ID){
+       $this->rosters->delete($ID);
+       redirect('/roster');
     }
     
 /*

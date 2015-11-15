@@ -26,7 +26,6 @@ and open the template in the editor.
             {Cancel}
             {Delete}
         </form>
-        
     </div>
 </div>
         
