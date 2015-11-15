@@ -15,27 +15,34 @@ class Roster extends Application {
     // calls method page() with parameter 1 passed into it.. basically if no session was loaded just display a table view starting at record 1
     public function index()
     {
+        $this->session->set_userdata('editPage', '/roster');
         $this->page(1);
     }
     
     function editMode() {
+        if (isset($_SESSION['editPage'])){
+            $currentPage = $this->session->userdata('editPage');
+        }
         if (!isset($_SESSION['editMode'])) {
             $this->session->set_userdata('editMode', true);
-            $this->data['pagebody'] = 'edit';
+            //$this->data['pagebody'] = 'edit';
+            redirect($currentPage);
         } else {
             if ($this->session->userdata('editMode')) {
                 $this->session->set_userdata('editMode', false);
-                $this->data['pagebody'] = 'welcome';
+                //$this->data['pagebody'] = 'welcome';
+                redirect($currentPage);
             } else {
                 $this->session->set_userdata('editMode', true);
-                $this->data['pagebody'] = 'edit';
+                //$this->data['pagebody'] = 'edit';
+                redirect($currentPage);
             }
         }
 
 
         
         
-        $this->render();
+        //$this->render();
         //redirect($_SERVER['REQUEST_URI']);
 //        if (!isset($_SESSION['displayNumber'])){
 //            $player = $this->session->userdata('displayNumber');
@@ -48,10 +55,10 @@ class Roster extends Application {
 
     function page($pagenum) {     
         //$this->load->library('pagination'); moved this to autoload
-        
+        $this->session->set_userdata('editPage', '/roster/page/'.$pagenum);
         //set the pagenum into a session variable
         $this->session->set_userdata('displayNumber', $pagenum);
-
+        $this->data['pagebody'] = 'roster';
         if (!isset($_SESSION['editMode'])) {
             $this->data['pagebody'] = 'roster';
         } else {
@@ -61,7 +68,7 @@ class Roster extends Application {
                 $this->data['pagebody'] = 'roster';
             }
         }
-
+        
        // $this->data['pagebody'] = 'roster';
         $config['base_url'] = '/roster/page';
 		$config['total_rows'] = $this->rosters->size();

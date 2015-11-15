@@ -73,6 +73,7 @@ class Player extends Application {
 
     // add to an order
     function display_player($player_id = null) {
+        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
         if ($player_id == null)
             redirect('/player/newPlayer');
 

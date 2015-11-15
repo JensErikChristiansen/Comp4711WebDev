@@ -17,6 +17,7 @@ class League extends Application {
     	//$this->load->model('teams');
     	//$this->data['teams'] = $this->teams->all_ordered_by('W');
         //$this->load->view('welcome');
+        $this->session->set_userdata('editPage', '/league');
         $this->data['pagebody'] = 'league';
 
         //first see if the session was set if not set display table layout               
