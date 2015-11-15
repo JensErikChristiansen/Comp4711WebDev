@@ -58,5 +58,6 @@ class League extends Application {
         else {
             $this->session->set_userdata('orderby', 'Code');
         }
+        $this->index();
     }
 }
