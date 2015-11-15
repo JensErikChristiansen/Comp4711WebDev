@@ -21,8 +21,7 @@ and open the template in the editor.
             {Birthdate}
             {Experience}
             {College}
-            {Code}
-            
+            {Code}            
             {Submit}
         </form>
         
