@@ -40,8 +40,8 @@ class Player extends Application {
         $newplayer->PlayerUpdated = 'e';
         
         
-        //$this->rosters->add($newplayer); //add this to our buffer
-        //redirect('/player/display_player/' . $player_id);
+        $this->rosters->add($newplayer); //add this to our buffer
+        redirect('/player/display_player/' . $player_id);
         
        
     }
