@@ -32,6 +32,9 @@ class Roster extends Application {
             }
         }
 
+
+        
+        
         $this->render();
         //redirect($_SERVER['REQUEST_URI']);
 //        if (!isset($_SESSION['displayNumber'])){
@@ -48,8 +51,18 @@ class Roster extends Application {
         
         //set the pagenum into a session variable
         $this->session->set_userdata('displayNumber', $pagenum);
-        
-        $this->data['pagebody'] = 'roster';
+
+        if (!isset($_SESSION['editMode'])) {
+            $this->data['pagebody'] = 'roster';
+        } else {
+            if ($this->session->userdata('editMode')) {
+                $this->data['pagebody'] = 'roster_edit';
+            } else {
+                $this->data['pagebody'] = 'roster';
+            }
+        }
+
+       // $this->data['pagebody'] = 'roster';
         $config['base_url'] = '/roster/page';
 		$config['total_rows'] = $this->rosters->size();
 		$config['per_page'] = 12;
