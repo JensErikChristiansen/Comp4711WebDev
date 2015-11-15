@@ -98,9 +98,55 @@ if (!function_exists('makeSubmitButton')) {
         $parms = array(
             'label' => $label,
             'title' => $title,
-            'css_extras' => $css_extras
+            'css_extras' => $css_extras,
+            
         );
         return $CI->parser->parse('_fields/submit', $parms, true);
+    }
+
+}
+
+/**
+ * Make a cancel button.
+ * 
+ * @param string $label Label to appear on the button
+ * @param string $title "Tooltip" text 
+ * @param string $css_extras Extra CSS class information
+ */
+if (!function_exists('makeCancelButton')) {
+
+    function makeCancelButton($label, $title, $css_extras = "") {
+        $CI = &get_instance();
+        $parms = array(
+            'label' => $label,
+            'title' => $title,
+          
+            'css_extras' => $css_extras
+        );
+        return $CI->parser->parse('_fields/cancel', $parms, true);
+    }
+
+}
+
+
+/**
+ * Make a delete button.
+ * 
+ * @param string $label Label to appear on the button
+ * @param string $title "Tooltip" text 
+ * @param string $css_extras Extra CSS class information
+ */
+if (!function_exists('makeDeleteButton')) {
+
+    function makeDeleteButton($label, $title, $css_extras = "", $ID) {
+        $CI = &get_instance();
+        $parms = array(
+            'label' => $label,
+            'title' => $title,
+           'ID' => $ID,
+            'css_extras' => $css_extras
+        );
+        return $CI->parser->parse('_fields/delete', $parms, true);
     }
 
 }

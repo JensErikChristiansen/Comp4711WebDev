@@ -67,7 +67,14 @@ class Player extends Application {
         redirect('/player/display_player/' . $player_id);
         
         */
-        $this->updatePlayer($ID);
+        
+           $this->updatePlayer($ID);
+         
+
+        
+       // $buttonType = $this->data['css_extras'];
+        
+        
     }
 
     // add to an order
@@ -99,10 +106,13 @@ class Player extends Application {
              if ($this->session->userdata('editMode')) {
                 $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
                 'btn-success');
-                $this->data['Cancel'] = makeSubmitButton('Cancel', "Click to cancel",
-                'btn-success');
-                $this->data['Delete'] = makeSubmitButton('Delete', "Click to delete",
-                'btn-success');
+                $this->data['Cancel'] = makeCancelButton('Cancel', "Click to cancel",
+                'btn-cancel');
+                $this->data['Delete'] = makeDeleteButton('Delete', "Click to delete",
+                'btn-danger', $player->ID);
+                $buttonType = $this->data['Submit'];
+                //$buttonType = $this->data['Cancel'];
+                
              }
              else{
                  $this->data['Submit'] = "";
@@ -116,6 +126,16 @@ class Player extends Application {
         }
         $this->render();
     }
+    
+    function cancel(){
+        redirect('/roster');
+    }
+    
+    function delete($ID){
+       $this->rosters->delete($ID);
+       redirect('/roster');
+    }
+    
 /*
     // inject order # into nested variable pair parameters
     function hokeyfix($varpair,$order) {
