@@ -17,7 +17,7 @@ class Player extends Application {
     }
 
     // start a new player addition...
-    function newplayer() {
+    function newPlayer() {
         ///neworder is newplayer
         //order_num got changed to player_id
         $player_id = $this->rosters->highest() +1;
@@ -40,20 +40,38 @@ class Player extends Application {
         $newplayer->PlayerUpdated = 'e';
         
         
-        $this->rosters->add($newplayer); //add this to our buffer
-        redirect('/player/display_player/' . $player_id);
+        //$this->rosters->add($newplayer); //add this to our buffer
+        //redirect('/player/display_player/' . $player_id);
         
        
     }
     
-    function updatePlayer() {
+    function updatePlayer($ID) {
+        $postValues = array();
+        $postValues = $this->input->post(NULL, TRUE);
         
+        $player = array();
+        $player = $this->rosters->get($ID);
+        foreach($postValues as $key => $value) {
+            $player->$key = $value;
+        }
+        $this->rosters->update($player);
+    }
+    
+    function confirm($ID) {
+        if ($ID === null) {
+            $this->newPlayer();
+        } else {
+            $this->updatePlayer($ID);
+        }
+        
+        redirect('/player/display_player/' . $player_id);
     }
 
     // add to an order
     function display_player($player_id = null) {
         if ($player_id == null)
-            redirect('/player/newplayer');
+            redirect('/player/newPlayer');
 
         $this->data['pagebody'] = 'player';
         
@@ -69,6 +87,7 @@ class Player extends Application {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
+        $this->data['ID'] = $player->ID;
         $this->data['Photo'] = $player->Photo;
 
 	$this->data['Submit'] = makeSubmitButton('Save', "Click to save",

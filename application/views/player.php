@@ -11,7 +11,7 @@ and open the template in the editor.
     </div>
     <div class="col-xs-6">
         
-        <form action ="/admin/confirm" method="post">
+        <form action ="/Player/confirm/{ID}" method="post">
             {Name}
             {PlayerNo}
             {Pos}
