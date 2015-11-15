@@ -21,14 +21,18 @@ class Roster extends Application {
     function editMode() {
         if (!isset($_SESSION['editMode'])) {
             $this->session->set_userdata('editMode', true);
+            $this->data['pagebody'] = 'edit';
         } else {
             if ($this->session->userdata('editMode')) {
                 $this->session->set_userdata('editMode', false);
+                $this->data['pagebody'] = 'welcome';
             } else {
                 $this->session->set_userdata('editMode', true);
+                $this->data['pagebody'] = 'edit';
             }
         }
-        
+
+        $this->render();
         //redirect($_SERVER['REQUEST_URI']);
 //        if (!isset($_SESSION['displayNumber'])){
 //            $player = $this->session->userdata('displayNumber');
