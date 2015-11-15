@@ -73,6 +73,7 @@ class Player extends Application {
 
     // add to an order
     function display_player($player_id = null) {
+        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
         if ($player_id == null)
             redirect('/player/newPlayer');
 
@@ -92,9 +93,16 @@ class Player extends Application {
         
         $this->data['ID'] = $player->ID;
         $this->data['Photo'] = $player->Photo;
-
-	$this->data['Submit'] = makeSubmitButton('Save', "Click to save",
+        if (isset($_SESSION['editMode'])) {
+             if ($this->session->userdata('editMode')) {
+                $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
                 'btn-success');
+             }
+             else{
+                 $this->data['Submit'] = "";
+             }
+        }else
+            $this->data['Submit'] = "";
         $this->render();
     }
 /*
