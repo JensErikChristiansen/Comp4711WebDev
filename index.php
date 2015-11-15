@@ -1,5 +1,4 @@
 <?php
-//developer branch
 /**
  * CodeIgniter
  *
@@ -99,7 +98,7 @@ switch (ENVIRONMENT)
  * Include the path if the folder is not in the same directory
  * as this file.
  */
-$system_path = '../system3'; //updated
+$system_path = '../system3';
 
 /*
  *---------------------------------------------------------------

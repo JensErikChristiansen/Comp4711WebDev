@@ -49,7 +49,6 @@ class Player extends Application {
     function updatePlayer($ID) {
         $postValues = array();
         $postValues = $this->input->post(NULL, TRUE);
-        
         $player = array();
         $player = $this->rosters->get($ID);
         foreach($postValues as $key => $value) {
@@ -97,12 +96,21 @@ class Player extends Application {
              if ($this->session->userdata('editMode')) {
                 $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
                 'btn-success');
+                $this->data['Cancel'] = makeSubmitButton('Cancel', "Click to cancel",
+                'btn-success');
+                $this->data['Delete'] = makeSubmitButton('Delete', "Click to delete",
+                'btn-success');
              }
              else{
                  $this->data['Submit'] = "";
+                 $this->data['Cancel'] = "";
+                 $this->data['Delete'] = "";
              }
-        }else
+        }else{
             $this->data['Submit'] = "";
+            $this->data['Cancel'] = "";
+            $this->data['Delete'] = "";
+        }
         $this->render();
     }
 /*

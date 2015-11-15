@@ -23,6 +23,8 @@ and open the template in the editor.
             {College}
             {Code}            
             {Submit}
+            {Cancel}
+            {Delete}
         </form>
         
     </div>
