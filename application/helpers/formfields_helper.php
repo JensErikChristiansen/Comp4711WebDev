@@ -106,6 +106,30 @@ if (!function_exists('makeSubmitButton')) {
 }
 
 /**
+ * Make a submit button.
+ * 
+ * @param string $label Label to appear on the button
+ * @param string $title "Tooltip" text 
+ * @param string $css_extras Extra CSS class information
+ */
+if (!function_exists('makeCancelButton')) {
+
+    function makeCancelButton($label, $title, $css_extras = "") {
+        $CI = &get_instance();
+        $parms = array(
+            'label' => $label,
+            'title' => $title,
+            'name' => $title,
+            'css_extras' => $css_extras
+        );
+        return $CI->parser->parse('_fields/cancel', $parms, true);
+    }
+
+}
+
+
+
+/**
  * Construct a form row to edit a large field.
  * 
  * @param <type> $label
