@@ -36,7 +36,7 @@ class Player extends Application {
         $newplayer['Birthdate'] = date(DATE_ATOM);
         $newplayer['Experience'] = Null;
         $newplayer['College'] = '';
-        $newplayer['Code'] = '';
+        $newplayer['Code'] = 'PIT';
         $newplayer['Photo'] = 'default.jpeg';
         $newplayer['PlayerUpdated'] = 'e';
         
