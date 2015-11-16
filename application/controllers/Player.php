@@ -20,12 +20,27 @@ class Player extends Application {
     function newPlayer() {
         ///neworder is newplayer
         //order_num got changed to player_id
-        $player_id = $this->rosters->highest() +1;
-        $newplayer = $this->rosters->create();
-       
+        $player_id = $this->rosters->highest() + 1;
+        //$newplayer = $this->rosters->create();
+//        $newplayer = array();
+        $this->data['pagebody'] = 'player';
         //from a form get all the player info
         //validate our form
-        $newplayer->ID = $player_id;
+        $newplayer['ID'] = $player_id;
+        $newplayer['PlayerNo'] = NULL;
+        $newplayer['Name'] = 'John, Doe';
+        $newplayer['Pos'] = '';
+        $newplayer['Status'] = '';
+        $newplayer['Height'] = '6\'4"';
+        $newplayer['Weight'] = Null;
+        $newplayer['Birthdate'] = date(DATE_ATOM);
+        $newplayer['Experience'] = Null;
+        $newplayer['College'] = '';
+        $newplayer['Code'] = '';
+        $newplayer['Photo'] = 'default.jpeg';
+        $newplayer['PlayerUpdated'] = 'e';
+        
+/*        $newplayer->ID = $player_id;
         $newplayer->PlayerNo = 101;
         $newplayer->Name = 'John, Doe';
         $newplayer->Pos = 'G';
@@ -38,10 +53,11 @@ class Player extends Application {
         $newplayer->Code = 'PIT';
         $newplayer->Photo = 'default.jpg';
         $newplayer->PlayerUpdated = 'e';
+  */      
+        $this->session->set_userdata('playerTemp', $newplayer);
+        //$this->rosters->add($newplayer); //add this to our buffer
+        $this->temp_player($player_id, 'default.jpg' );
         
-        
-        $this->rosters->add($newplayer); //add this to our buffer
-        redirect('/player/display_player/' . $player_id);
         
        
     }
@@ -57,37 +73,33 @@ class Player extends Application {
         $this->rosters->update($player);
         redirect('/roster');
     }
-    
-    function confirm($ID) {
-       /* if ($ID === null) {
-            $this->newPlayer();
-        } else {
-            
-        }
-        redirect('/player/display_player/' . $player_id);
-        
-        */
-        
-           $this->updatePlayer($ID);
-         
-
-        
-       // $buttonType = $this->data['css_extras'];
-        
-        
-    }
-
-    // add to an order
-    function display_player($player_id = null) {
-        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
-        if ($player_id == null)
-            redirect('/player/newPlayer');
-
-        $this->data['pagebody'] = 'player';
-        
+    function addPlayer($ID){
+        $postValues = array();
+        $postValues = $this->input->post(NULL, TRUE);
         $player = array();
-        $player = $this->rosters->get($player_id);
-        
+        $player = $this->rosters->get($ID);
+        foreach($postValues as $key => $value) {
+            $player->$key = $value;
+        }
+        $this->rosters->add($player);
+        redirect('/roster');
+    }
+    function confirm($ID) {
+        $player = $this->session->userdata('playerTemp');
+        $player_id = $this->rosters->exists($ID);
+        if($player_id)
+           $this->updatePlayer($ID);
+         else{
+            $this->addPlayer($ID);
+             
+         }
+    }
+    
+    
+
+    function temp_player($player_id, $photo){
+        $player = array();
+        $player = $this->session->userdata('playerTemp');
         if (isset($_SESSION['editMode'])) {
             $editMode = $this->session->userdata('editMode');
         } else {
@@ -100,8 +112,8 @@ class Player extends Application {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
-        $this->data['ID'] = $player->ID;
-        $this->data['Photo'] = $player->Photo;
+        $this->data['ID'] = $player_id;
+        $this->data['Photo'] = $photo;
         if (isset($_SESSION['editMode'])) {
              if ($this->session->userdata('editMode')) {
                 $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
@@ -109,7 +121,7 @@ class Player extends Application {
                 $this->data['Cancel'] = makeCancelButton('Cancel', "Click to cancel",
                 'btn-cancel');
                 $this->data['Delete'] = makeDeleteButton('Delete', "Click to delete",
-                'btn-danger', $player->ID);
+                'btn-danger', $player_id);
                 $buttonType = $this->data['Submit'];
                 //$buttonType = $this->data['Cancel'];
                 
@@ -126,6 +138,23 @@ class Player extends Application {
         }
         $this->render();
     }
+    
+    // add to an order
+    function display_player($player_id = null) {
+        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
+        if ($player_id == null)
+            redirect('/player/newPlayer');
+
+        $this->data['pagebody'] = 'player';
+        
+        $player = array();
+        $player = $this->rosters->get($player_id);
+        
+        $this->session->set_userdata('playerTemp', $player);
+        $Photo = $player->Photo;
+        $this->temp_player($player_id, $Photo);
+    }
+        
     
     function cancel(){
         redirect('/roster');
