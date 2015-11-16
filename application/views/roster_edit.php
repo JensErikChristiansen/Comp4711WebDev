@@ -13,7 +13,7 @@ and open the template in the editor.
 <a href="/roster/orderby/name" class="btn btn-large btn-primary">Order by Name</a><br>
 <a href="/roster/orderby/position" class="btn btn-large btn-primary">Order by Position</a><br>
 
-<a href="/player/display_player" class="btn btn-large btn-primary">Add New Player</a><br>
+<a href="/player/displayPlayer" class="btn btn-large btn-primary">Add New Player</a><br>
 {theview}
 
 

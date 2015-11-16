@@ -14,36 +14,7 @@ class Player extends Application {
     function __construct() {
         parent::__construct();
         $this->load->helper('formfields');
-    }
-
-    // start a new player addition...
-    function newPlayer() {
-        ///neworder is newplayer
-        //order_num got changed to player_id
-        $player_id = $this->rosters->highest() +1;
-        $newplayer = $this->rosters->create();
-       
-        //from a form get all the player info
-        //validate our form
-        $newplayer->ID = $player_id;
-        $newplayer->PlayerNo = 101;
-        $newplayer->Name = 'John, Doe';
-        $newplayer->Pos = 'G';
-        $newplayer->Status = 'RES';
-        $newplayer->Height = '6\'4"';
-        $newplayer->Weight = 275;
-        $newplayer->Birthdate = date(DATE_ATOM);
-        $newplayer->Experience = 1;
-        $newplayer->College = 'BCIT';
-        $newplayer->Code = 'PIT';
-        $newplayer->Photo = 'Default';
-        $newplayer->PlayerUpdated = 'e';
-        
-        
-        $this->rosters->add($newplayer); //add this to our buffer
-        redirect('/player/display_player/' . $player_id);
-        
-       
+        $this->errors = array();
     }
     
     function updatePlayer($ID) {
@@ -58,72 +29,112 @@ class Player extends Application {
         redirect('/roster');
     }
     
-    function confirm($ID) {
-       /* if ($ID === null) {
-            $this->newPlayer();
-        } else {
-            
+    function validate() {
+        
+        $player = $this->rosters->create();
+        foreach ($_POST as $key => $value) {
+            $player->$key = $_POST[$key];
         }
-        redirect('/player/display_player/' . $player_id);
+        //$player = $this->session->get_userdata('tempPlayer');
+        if (empty($player->Name)) {
+            $this->errors[] = 'You must enter a name.';
+        }
         
-        */
+//        if ($this->rosters->exists($this->db->where('playerNo ==', $player->playerNo))) {
+//            $this->errors[] = 'jersey number already exists';
+//        }
         
-           $this->updatePlayer($ID);
-         
-
+        if (count($this->errors) > 0) {
+            $this->displayPlayer($player->ID, $player);
+            return; // make sure we don't try to save anything
+        }
         
-       // $buttonType = $this->data['css_extras'];
-        
+        $this->errors = array();
         
     }
 
-    // add to an order
-    function display_player($player_id = null) {
-        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
-        if ($player_id == null)
-            redirect('/player/newPlayer');
-
-        $this->data['pagebody'] = 'player';
-        
+    function displayPlayerFromDatabase($ID) {
         $player = array();
-        $player = $this->rosters->get($player_id);
+        $player = $this->rosters->get($ID);
         
+        // store player in session
+        $this->session->set_userdata('tempPlayer', $player);
+        return $player;
+        
+    }
+    
+    function createPlayer() {
+        $player = $this->rosters->create();
+        
+        $player->ID = $this->rosters->highest() + 1;
+        $player->PlayerNo = '';
+        $player->Name = '';
+        $player->Pos = '';
+        $player->Status = '';
+        $player->Height = '';
+        $player->Weight = '';
+        $player->Birthdate = date(DATE_ATOM);
+        $player->Experience = '';
+        $player->College = '';
+        $player->Code = '';
+        $player->Photo = 'default.jpg';
+        //$player->PlayerUpdated = 'e';
+        $this->session->set_userdata('tempPlayer', $player);
+        return $player;
+    }
+
+    // add to an order
+    function displayPlayer($ID = null, $player = null) {
+        $this->session->set_userdata('editPage', '/player/displayPlayer/' . $ID);
+        
+        // If null, we are creating a new player
+        if ($ID === null) {
+            $player = $this->createPlayer();
+        } else if ($player === null) {
+            $player = $this->displayPlayerFromDatabase($ID);
+        }
+        
+        // determine if we're in edit mode
         if (isset($_SESSION['editMode'])) {
             $editMode = $this->session->userdata('editMode');
         } else {
             $editMode = FALSE;
         }
         
-        //function makeTextField($label, $name, $value, $explain = "", $maxlen = 40, $size = 25, $disabled = false) {
-
+        $message = '';
+        
+        if (count($this->errors) > 0) {
+            foreach ($this->errors as $booboo)
+              $message .= $booboo . "<BR>";
+        }
+        
+        $this->data['message'] = $message;
+        
+        // make text fields for each key value pair
         foreach ($player as $key => $val) {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
+        // override previous foreach loop: ID and Photo are not text fields
         $this->data['ID'] = $player->ID;
         $this->data['Photo'] = $player->Photo;
-        if (isset($_SESSION['editMode'])) {
-             if ($this->session->userdata('editMode')) {
-                $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
-                'btn-success');
-                $this->data['Cancel'] = makeCancelButton('Cancel', "Click to cancel",
-                'btn-cancel');
-                $this->data['Delete'] = makeDeleteButton('Delete', "Click to delete",
-                'btn-danger', $player->ID);
-                $buttonType = $this->data['Submit'];
-                //$buttonType = $this->data['Cancel'];
-                
-             }
-             else{
-                 $this->data['Submit'] = "";
-                 $this->data['Cancel'] = "";
-                 $this->data['Delete'] = "";
-             }
-        }else{
-            $this->data['Submit'] = "";
-            $this->data['Cancel'] = "";
-            $this->data['Delete'] = "";
+        
+        $this->data['Submit'] = "";
+        $this->data['Cancel'] = "";
+        $this->data['Delete'] = "";
+        
+        // if editMode is set and we're in edit mode, display CRUD controls
+        if (isset($_SESSION['editMode']) && $this->session->userdata('editMode')) {
+            $this->data['Submit'] = makeSubmitButton('Save', "Save",
+            'btn-success');
+            $this->data['Cancel'] = makeCancelButton('Cancel', "Cancel",
+            'btn-primary');
+            $this->data['Delete'] = makeDeleteButton('Delete', "Delete",
+            'btn-danger', $ID);
         }
+
+        $this->data['pagebody'] = 'player';
+        
         $this->render();
     }
     

@@ -143,7 +143,7 @@ if (!function_exists('makeDeleteButton')) {
         $parms = array(
             'label' => $label,
             'title' => $title,
-           'ID' => $ID,
+            'ID' => $ID,
             'css_extras' => $css_extras
         );
         return $CI->parser->parse('_fields/delete', $parms, true);

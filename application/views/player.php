@@ -10,8 +10,10 @@ and open the template in the editor.
         <img src="/assets/data/img/{Photo}">
     </div>
     <div class="col-xs-6">
-        
-        <form action ="/Player/confirm/{ID}" method="post">
+        {message}
+        <form action ="/Player/validate" method="post">
+            <input type="hidden" value="{Photo}"/>
+            <input type="hidden" value="{ID}"/>
             {Name}
             {PlayerNo}
             {Pos}
