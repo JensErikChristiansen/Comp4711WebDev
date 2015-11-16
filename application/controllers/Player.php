@@ -51,7 +51,7 @@ class Player extends Application {
         $newplayer->Experience = 1;
         $newplayer->College = 'BCIT';
         $newplayer->Code = 'PIT';
-        $newplayer->Photo = 'Default';
+        $newplayer->Photo = 'default.jpg';
         $newplayer->PlayerUpdated = 'e';
   */      
         $this->session->set_userdata('playerTemp', $newplayer);

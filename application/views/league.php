@@ -19,7 +19,7 @@ and open the template in the editor.
 		<tr>
 			<td><img src='/assets/data/img/{TeamLogo}' title='{TeamName}'></td>
 			<td>{Code}</td>
-                        <td><a href="{where}">{TeamName}</a></td>
+                        <td><a href="{SiteURL}">{TeamName}</a></td>
 			<td>{W}</td>
 			<td>{L}</td>
 			<td>{T}</td>
