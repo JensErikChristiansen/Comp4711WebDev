@@ -27,19 +27,19 @@ class Player extends Application {
         //from a form get all the player info
         //validate our form
         $newplayer['ID'] = $player_id;
-        $newplayer['PlayerNo'] = 101;
+        $newplayer['PlayerNo'] = NULL;
         $newplayer['Name'] = 'John, Doe';
-        $newplayer['Pos'] = 'G';
-        $newplayer['Status'] = 'RES';
+        $newplayer['Pos'] = '';
+        $newplayer['Status'] = '';
         $newplayer['Height'] = '6\'4"';
-        $newplayer['Weight'] = 275;
+        $newplayer['Weight'] = Null;
         $newplayer['Birthdate'] = date(DATE_ATOM);
-        $newplayer['Experience'] = 1;
-        $newplayer['College'] = 'BCIT';
-        $newplayer['Code'] = 'PIT';
+        $newplayer['Experience'] = Null;
+        $newplayer['College'] = '';
+        $newplayer['Code'] = '';
         $newplayer['Photo'] = 'default.jpeg';
         $newplayer['PlayerUpdated'] = 'e';
-        echo $player_id;
+        
 /*        $newplayer->ID = $player_id;
         $newplayer->PlayerNo = 101;
         $newplayer->Name = 'John, Doe';
