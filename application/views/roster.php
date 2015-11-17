@@ -5,19 +5,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <div class="jumbotron container-fluid">
-
-	<div class="col-xs-6">
-		<h1>Pittsburgh Steelers</h1>
-	</div>
-
-	<img class="col-xs-6" src="/assets/data/img/steelers_large.png">
-
+	<h1>Pittsburgh Steelers</h1>
 </div>
 
 
 <div class="btn-group btn-group-justified">
-	<a href="/roster/layout/0" class="btn btn-lg btn-warning" role="button">Table Display</a>
-	<a href="/roster/layout/1" class="btn btn-lg btn-info">Gallery Display</a>
+	<a href="/roster/layout/TABLE" class="btn btn-lg btn-warning" role="button">Table Display</a>
+	<a href="/roster/layout/GALLERY" class="btn btn-lg btn-info">Gallery Display</a>
 </div>
 
 <br>

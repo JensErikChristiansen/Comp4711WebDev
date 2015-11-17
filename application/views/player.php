@@ -11,7 +11,7 @@ and open the template in the editor.
     </div>
     <div class="col-xs-6">
         {message}
-        <form action ="/Player/validate" method="post">
+        <form action="/Player/validate" method="post">
             <input type="hidden" value="{Photo}"/>
             <input type="hidden" value="{ID}"/>
             {Name}

@@ -82,7 +82,7 @@ class Roster extends Application {
 
         //first see if the session was set if not set display table layout               
         if(isset($_SESSION['layout'])){
-            if($this->session->userdata('layout') == "GALLERY") {
+            if($this->session->userdata('layout') == "TABLE") {
                 $this->displayTable($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
             }
             else {

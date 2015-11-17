@@ -40,10 +40,10 @@ class Player extends Application {
             $this->errors[] = 'You must enter a name.';
         }
         
-//        if ($this->rosters->exists($this->db->where('playerNo ==', $player->playerNo))) {
-//            $this->errors[] = 'jersey number already exists';
-//        }
-        
+        // if ($this->rosters->exists($this->db->where('playerNo ==', $player->playerNo))) {
+        //     $this->errors[] = 'jersey number already exists';
+        // }
+
         if (count($this->errors) > 0) {
             $this->displayPlayer($this->playerTemp->ID, true);
             return; // make sure we don't try to save anything
@@ -55,6 +55,7 @@ class Player extends Application {
     
     function displayPlayerFromDatabase($ID) {
         $this->playerTemp = $this->rosters->get($ID);
+        $this->data['sumfin'] = "Photo: " . $this->playerTemp->Photo;
     }
     
     function createPlayer() {
@@ -127,22 +128,6 @@ class Player extends Application {
         $this->data['pagebody'] = 'player';
         
         $this->render();
-    }
-    
-    // add to an order
-    function display_player($player_id = null) {
-        $this->session->set_userdata('editPage', '/player/display_player/'.$player_id);
-        if ($player_id == null)
-            redirect('/player/newPlayer');
-
-        $this->data['pagebody'] = 'player';
-        
-        $player = array();
-        $player = $this->rosters->get($player_id);
-        
-        $this->session->set_userdata('playerTemp', $player);
-        $Photo = $player->Photo;
-        $this->temp_player($player_id, $Photo);
     }
         
     
