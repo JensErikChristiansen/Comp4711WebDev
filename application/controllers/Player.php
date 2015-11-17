@@ -14,128 +14,118 @@ class Player extends Application {
     function __construct() {
         parent::__construct();
         $this->load->helper('formfields');
-    }
-
-    // start a new player addition...
-    function newPlayer() {
-        ///neworder is newplayer
-        //order_num got changed to player_id
-        $player_id = $this->rosters->highest() + 1;
-        //$newplayer = $this->rosters->create();
-//        $newplayer = array();
-        $this->data['pagebody'] = 'player';
-        //from a form get all the player info
-        //validate our form
-        $newplayer['ID'] = $player_id;
-        $newplayer['PlayerNo'] = NULL;
-        $newplayer['Name'] = 'John, Doe';
-        $newplayer['Pos'] = '';
-        $newplayer['Status'] = '';
-        $newplayer['Height'] = '6\'4"';
-        $newplayer['Weight'] = Null;
-        $newplayer['Birthdate'] = date(DATE_ATOM);
-        $newplayer['Experience'] = Null;
-        $newplayer['College'] = '';
-        $newplayer['Code'] = 'PIT';
-        $newplayer['Photo'] = 'default.jpeg';
-        $newplayer['PlayerUpdated'] = 'e';
-        
-/*        $newplayer->ID = $player_id;
-        $newplayer->PlayerNo = 101;
-        $newplayer->Name = 'John, Doe';
-        $newplayer->Pos = 'G';
-        $newplayer->Status = 'RES';
-        $newplayer->Height = '6\'4"';
-        $newplayer->Weight = 275;
-        $newplayer->Birthdate = date(DATE_ATOM);
-        $newplayer->Experience = 1;
-        $newplayer->College = 'BCIT';
-        $newplayer->Code = 'PIT';
-        $newplayer->Photo = 'default.jpg';
-        $newplayer->PlayerUpdated = 'e';
-  */      
-        $this->session->set_userdata('playerTemp', $newplayer);
-        //$this->rosters->add($newplayer); //add this to our buffer
-        $this->temp_player($player_id, 'default.jpg' );
-        
-        
-       
+        $this->errors = array();
+        $this->playerTemp = $this->rosters->create();
     }
     
-    function updatePlayer($ID) {
+    function updatePlayer() {
         $postValues = array();
         $postValues = $this->input->post(NULL, TRUE);
-        $player = array();
-        $player = $this->rosters->get($ID);
         foreach($postValues as $key => $value) {
-            $player->$key = $value;
+            $this->playerTemp->$key = $value;
         }
-        $this->rosters->update($player);
+        $this->rosters->update($this->playerTemp);
         redirect('/roster');
     }
-    function addPlayer($ID){
-        $postValues = array();
-        $postValues = $this->input->post(NULL, TRUE);
-        $player = array();
-        $player = $this->rosters->get($ID);
-        foreach($postValues as $key => $value) {
-            $player->$key = $value;
-        }
-        $this->rosters->add($player);
-        redirect('/roster');
-    }
-    function confirm($ID) {
-        $player = $this->session->userdata('playerTemp');
-        $player_id = $this->rosters->exists($ID);
-        if($player_id)
-           $this->updatePlayer($ID);
-         else{
-            $this->addPlayer($ID);
-             
-         }
-    }
-    
-    
 
-    function temp_player($player_id, $photo){
-        $player = array();
-        $player = $this->session->userdata('playerTemp');
+    
+    function validate() {
+        
+        //$player = $this->rosters->create();
+        foreach ($_POST as $key => $value) {
+            $this->playerTemp->$key = $_POST[$key];
+        }
+        //$player = $this->session->get_userdata('tempPlayer');
+        if (empty($this->playerTemp->Name)) {
+            $this->errors[] = 'You must enter a name.';
+        }
+        
+//        if ($this->rosters->exists($this->db->where('playerNo ==', $player->playerNo))) {
+//            $this->errors[] = 'jersey number already exists';
+//        }
+        
+        if (count($this->errors) > 0) {
+            $this->displayPlayer($this->playerTemp->ID, true);
+            return; // make sure we don't try to save anything
+        }
+        
+        $this->errors = array();
+        
+    }
+    
+    function displayPlayerFromDatabase($ID) {
+        $this->playerTemp = $this->rosters->get($ID);
+    }
+    
+    function createPlayer() {
+        $this->playerTemp = $this->rosters->create();
+        
+        $this->playerTemp->ID = $this->rosters->highest() + 1;
+        $this->playerTemp->PlayerNo = '';
+        $this->playerTemp->Name = '';
+        $this->playerTemp->Pos = '';
+        $this->playerTemp->Status = '';
+        $this->playerTemp->Height = '';
+        $this->playerTemp->Weight = '';
+        $this->playerTemp->Birthdate = date(DATE_ATOM);
+        $this->playerTemp->Experience = '';
+        $this->playerTemp->College = '';
+        $this->playerTemp->Code = '';
+        $this->playerTemp->Photo = 'default.jpg';
+        //$player->PlayerUpdated = 'e';
+    }
+
+    function displayPlayer($ID = null, $invalid = false) {
+        $this->session->set_userdata('editPage', '/player/displayPlayer/' . $ID);
+        
+        // If null, we are creating a new player
+        if ($ID === null) {
+            $this->createPlayer();
+        } else if (!$invalid) {
+            $this->displayPlayerFromDatabase($ID);
+        }
+        
+        // determine if we're in edit mode
         if (isset($_SESSION['editMode'])) {
             $editMode = $this->session->userdata('editMode');
         } else {
             $editMode = FALSE;
         }
         
-        //function makeTextField($label, $name, $value, $explain = "", $maxlen = 40, $size = 25, $disabled = false) {
-
-        foreach ($player as $key => $val) {
+        $message = '';
+        
+        if (count($this->errors) > 0) {
+            foreach ($this->errors as $booboo)
+              $message .= $booboo . "<BR>";
+        }
+        
+        $this->data['message'] = $message;
+        
+        // make text fields for each key value pair
+        foreach ($this->playerTemp as $key => $val) {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
-        $this->data['ID'] = $player_id;
-        $this->data['Photo'] = $photo;
-        if (isset($_SESSION['editMode'])) {
-             if ($this->session->userdata('editMode')) {
-                $this->data['Submit'] = makeSubmitButton('Save', "Click to save",
-                'btn-success');
-                $this->data['Cancel'] = makeCancelButton('Cancel', "Click to cancel",
-                'btn-cancel');
-                $this->data['Delete'] = makeDeleteButton('Delete', "Click to delete",
-                'btn-danger', $player_id);
-                $buttonType = $this->data['Submit'];
-                //$buttonType = $this->data['Cancel'];
-                
-             }
-             else{
-                 $this->data['Submit'] = "";
-                 $this->data['Cancel'] = "";
-                 $this->data['Delete'] = "";
-             }
-        }else{
-            $this->data['Submit'] = "";
-            $this->data['Cancel'] = "";
-            $this->data['Delete'] = "";
+        // override previous foreach loop: ID and Photo are not text fields
+        $this->data['ID'] = $this->playerTemp->ID;
+        $this->data['Photo'] = $this->playerTemp->Photo;
+        
+        $this->data['Submit'] = "";
+        $this->data['Cancel'] = "";
+        $this->data['Delete'] = "";
+        
+        // if editMode is set and we're in edit mode, display CRUD controls
+        if (isset($_SESSION['editMode']) && $this->session->userdata('editMode')) {
+            $this->data['Submit'] = makeSubmitButton('Save', "Save",
+            'btn-success');
+            $this->data['Cancel'] = makeCancelButton('Cancel', "Cancel",
+            'btn-primary');
+            $this->data['Delete'] = makeDeleteButton('Delete', "Delete",
+            'btn-danger', $ID);
         }
+
+        $this->data['pagebody'] = 'player';
+        
         $this->render();
     }
     
@@ -165,72 +155,4 @@ class Player extends Application {
        redirect('/roster');
     }
     
-/*
-    // inject order # into nested variable pair parameters
-    function hokeyfix($varpair,$order) {
-	foreach($varpair as &$record)
-	    $record->order_num = $order;
-    }
-    
-    // make a menu ordering column
-    function make_column($category) {
-        //FIXME
-        return $this->menu->some('category', $category);
-        //return $items;
-    }
-
-    // add an item to an order
-    function add($order_num, $item) {
-        //FIXME
-        
-        $this->orders->add_item($order_num, $item);
-        redirect('/order/display_menu/' . $order_num);
-    }
-
-    // checkout
-    function checkout($order_num) {
-        $this->data['title'] = 'Checking Out';
-        $this->data['pagebody'] = 'show_order';
-        $this->data['order_num'] = $order_num;
-        //FIXME
-        $this->data['okornot'] = $this->orders->validate($order_num) ? "" : "disabled";
-        $this->data['total'] = number_format($this->orders->total($order_num),2);
-        $items = $this->orderitems->group($order_num);
-        foreach($items as $item)
-        {
-            $menuitem =$this->menu->get($item->item);
-            $item->code = $menuitem->name;
-            
-        }
-
-        $this->data['items'] =$items;
-        
-        $this->render();
-    }
-
-    // proceed with checkout
-    function proceed($order_num) {
-        //FIXME
-        if(!$this->orders->validate($order_num))
-            redirect('/order/display_menu/'.$order_num);
-        $record = $this->orders->get($order_num);
-        $record->date = date(DATE_ATOM);
-        $record->status = 'c';
-        $record->total = $this->orders->total($order_num);
-        $this->orders->update($record);
-        
-        redirect('/');
-    }
-
-    // cancel the order
-    function cancel($order_num) {
-        //FIXME
-        $this->orderitems->delete_some($order_num);
-        $record = $this->orders->get($order_num);
-        $record->status = 'x';
-        $this->orders->update($record);
-        
-        redirect('/');
-    }
-*/
 }
