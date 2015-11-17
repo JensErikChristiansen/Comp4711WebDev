@@ -20,37 +20,18 @@ class Roster extends Application {
     }
     
     function editMode() {
-        if (isset($_SESSION['editPage'])){
-            $currentPage = $this->session->userdata('editPage');
-        }
         if (!isset($_SESSION['editMode'])) {
             $this->session->set_userdata('editMode', true);
-            //$this->data['pagebody'] = 'edit';
-            redirect($currentPage);
-        } else {
-            if ($this->session->userdata('editMode')) {
-                $this->session->set_userdata('editMode', false);
-                //$this->data['pagebody'] = 'welcome';
-                redirect($currentPage);
-            } else {
-                $this->session->set_userdata('editMode', true);
-                //$this->data['pagebody'] = 'edit';
-                redirect($currentPage);
-            }
+            redirect($this->session->userdata('editPage'));
         }
 
+        if ($this->session->userdata('editMode')) {
+            $this->session->set_userdata('editMode', false);
+        } else {
+            $this->session->set_userdata('editMode', true);
+        }
 
-        
-        
-        //$this->render();
-        //redirect($_SERVER['REQUEST_URI']);
-//        if (!isset($_SESSION['displayNumber'])){
-//            $player = $this->session->userdata('displayNumber');
-//            $this->page($player);
-//        } else {
-//            $this->page(1);
-//        }
-        
+        redirect($this->session->userdata('editPage'));
     }
 
     function page($pagenum) {  
@@ -60,45 +41,58 @@ class Roster extends Application {
         //set the pagenum into a session variable
         $this->session->set_userdata('displayNumber', $pagenum);
         $this->data['pagebody'] = 'roster';
-        if (isset($_SESSION['editMode'])) {
-            if ($this->session->userdata('editMode')) {
-                $this->data['pagebody'] = 'roster_edit';
-            } else {
-                $this->data['pagebody'] = 'roster';
-            }
+
+        if (isset($_SESSION['editMode']) && $this->session->userdata('editMode')) {
+            $this->data['newPlayerButton'] = makeNewPlayerButton("Add New Player", 'btn btn-success');   
         } else {
-            $this->data['pagebody'] = 'roster';
+            $this->data['newPlayerButton'] = "";
         }
         
        // $this->data['pagebody'] = 'roster';
         $config['base_url'] = '/roster/page';
 		$config['total_rows'] = $this->rosters->size();
 		$config['per_page'] = 12;
+        $config['full_tag_open'] = '<div class="pagination">';
+        $config['full_tag_close'] = '</div>';
+        $config['next_link'] = '&raquo;';
+        $config['prev_link'] = '&laquo;';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a>';
+        $config['cur_tag_close'] = '</li></a>';
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+
 		$this->pagination->initialize($config);
-                        //first see if the session was set if not set the order of the display   
-                
-        if(isset($_SESSION['orderbyplayer'])){
-            $orderby = $this->session->userdata('orderbyplayer');
-            //$this->data['teams'] = $this->rosters->all_ordered_by($orderby);
+        $this->data['pagination'] = $this->pagination->create_links();
+        
+        //first see if the session was set; if not, set the order of the display     
+        if(isset($_SESSION['orderBy'])){
+            $orderby = $this->session->userdata('orderBy');
         }
         else {
             $orderby = 'ID';
-             //$this->data['teams'] = $this->rosters->all_ordered_by('Code');
         }
 
         //first see if the session was set if not set display table layout               
         if(isset($_SESSION['layout'])){
-            $layout = $this->session->userdata('layout');
-            if($layout)// session was gallery layout
+            if($this->session->userdata('layout') == "GALLERY") {
                 $this->displayTable($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
-            else
+            }
+            else {
                 $this->displayGallery($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
+            }
         }
-        else
+        else {
             $this->displayTable($this->rosters->range_ordered_by($config['per_page'], $pagenum, $orderby));
-        
+        }
         $this->render();
-        echo $this->pagination->create_links();
     }
 
     function displayTable($arr) {
@@ -142,35 +136,33 @@ class Roster extends Application {
     
 
     function layout($layout){
-        if($layout == 0){
-             $this->session->set_userdata('layout', TRUE);
-        }
-        else{
-            $this->session->set_userdata('layout', FALSE);
-        }
         
+        $this->session->set_userdata('layout', $layout);
         
-        if(isset($_SESSION['displayNumber'])){ //if the displayNumber was set
-            //take out the "page number" loaded from the session and input it in
+        // Redisplay current page
+        if(isset($_SESSION['displayNumber'])){
             $displayNum = $this->session->userdata('displayNumber');
             $this->page($displayNum);
         }
-        else
-            $this->page(1); //if the displayNumber was never set
+        else {
+            // default to first page if displayNumber session variable
+            // was not set.
+            $this->page(1);
+        }
     }
     
-    function orderby($orderby){
-        if($orderby == "playerno"){
-             $this->session->set_userdata('orderbyplayer', 'PlayerNo');
+    function orderBy($orderBy){
+        if($orderBy == "playerno"){
+             $this->session->set_userdata('orderBy', 'PlayerNo');
         }
-        else if($orderby == "name") {
-            $this->session->set_userdata('orderbyplayer', 'Name');
+        else if($orderBy == "name") {
+            $this->session->set_userdata('orderBy', 'Name');
         }
-        else if($orderby == "position") {
-            $this->session->set_userdata('orderbyplayer', 'Pos');
+        else if($orderBy == "position") {
+            $this->session->set_userdata('orderBy', 'Pos');
         }
         else {
-            $this->session->set_userdata('orderbyplayer', 'Code');
+            $this->session->set_userdata('orderBy', 'Code');
         }
         $this->index();
     }

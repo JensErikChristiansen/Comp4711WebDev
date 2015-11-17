@@ -15,28 +15,27 @@ class Player extends Application {
         parent::__construct();
         $this->load->helper('formfields');
         $this->errors = array();
+        $this->playerTemp = $this->rosters->create();
     }
     
-    function updatePlayer($ID) {
+    function updatePlayer() {
         $postValues = array();
         $postValues = $this->input->post(NULL, TRUE);
-        $player = array();
-        $player = $this->rosters->get($ID);
         foreach($postValues as $key => $value) {
-            $player->$key = $value;
+            $this->playerTemp->$key = $value;
         }
-        $this->rosters->update($player);
+        $this->rosters->update($this->playerTemp);
         redirect('/roster');
     }
     
     function validate() {
         
-        $player = $this->rosters->create();
+        //$player = $this->rosters->create();
         foreach ($_POST as $key => $value) {
-            $player->$key = $_POST[$key];
+            $this->playerTemp->$key = $_POST[$key];
         }
         //$player = $this->session->get_userdata('tempPlayer');
-        if (empty($player->Name)) {
+        if (empty($this->playerTemp->Name)) {
             $this->errors[] = 'You must enter a name.';
         }
         
@@ -45,7 +44,7 @@ class Player extends Application {
 //        }
         
         if (count($this->errors) > 0) {
-            $this->displayPlayer($player->ID, $player);
+            $this->displayPlayer($this->playerTemp->ID, true);
             return; // make sure we don't try to save anything
         }
         
@@ -54,44 +53,36 @@ class Player extends Application {
     }
 
     function displayPlayerFromDatabase($ID) {
-        $player = array();
-        $player = $this->rosters->get($ID);
-        
-        // store player in session
-        $this->session->set_userdata('tempPlayer', $player);
-        return $player;
-        
+        $this->playerTemp = $this->rosters->get($ID);
     }
     
     function createPlayer() {
-        $player = $this->rosters->create();
+        $this->playerTemp = $this->rosters->create();
         
-        $player->ID = $this->rosters->highest() + 1;
-        $player->PlayerNo = '';
-        $player->Name = '';
-        $player->Pos = '';
-        $player->Status = '';
-        $player->Height = '';
-        $player->Weight = '';
-        $player->Birthdate = date(DATE_ATOM);
-        $player->Experience = '';
-        $player->College = '';
-        $player->Code = '';
-        $player->Photo = 'default.jpg';
+        $this->playerTemp->ID = $this->rosters->highest() + 1;
+        $this->playerTemp->PlayerNo = '';
+        $this->playerTemp->Name = '';
+        $this->playerTemp->Pos = '';
+        $this->playerTemp->Status = '';
+        $this->playerTemp->Height = '';
+        $this->playerTemp->Weight = '';
+        $this->playerTemp->Birthdate = date(DATE_ATOM);
+        $this->playerTemp->Experience = '';
+        $this->playerTemp->College = '';
+        $this->playerTemp->Code = '';
+        $this->playerTemp->Photo = 'default.jpg';
         //$player->PlayerUpdated = 'e';
-        $this->session->set_userdata('tempPlayer', $player);
-        return $player;
     }
 
     // add to an order
-    function displayPlayer($ID = null, $player = null) {
+    function displayPlayer($ID = null, $invalid = false) {
         $this->session->set_userdata('editPage', '/player/displayPlayer/' . $ID);
         
         // If null, we are creating a new player
         if ($ID === null) {
-            $player = $this->createPlayer();
-        } else if ($player === null) {
-            $player = $this->displayPlayerFromDatabase($ID);
+            $this->createPlayer();
+        } else if (!$invalid) {
+            $this->displayPlayerFromDatabase($ID);
         }
         
         // determine if we're in edit mode
@@ -111,13 +102,13 @@ class Player extends Application {
         $this->data['message'] = $message;
         
         // make text fields for each key value pair
-        foreach ($player as $key => $val) {
+        foreach ($this->playerTemp as $key => $val) {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
         // override previous foreach loop: ID and Photo are not text fields
-        $this->data['ID'] = $player->ID;
-        $this->data['Photo'] = $player->Photo;
+        $this->data['ID'] = $this->playerTemp->ID;
+        $this->data['Photo'] = $this->playerTemp->Photo;
         
         $this->data['Submit'] = "";
         $this->data['Cancel'] = "";
@@ -147,72 +138,4 @@ class Player extends Application {
        redirect('/roster');
     }
     
-/*
-    // inject order # into nested variable pair parameters
-    function hokeyfix($varpair,$order) {
-	foreach($varpair as &$record)
-	    $record->order_num = $order;
-    }
-    
-    // make a menu ordering column
-    function make_column($category) {
-        //FIXME
-        return $this->menu->some('category', $category);
-        //return $items;
-    }
-
-    // add an item to an order
-    function add($order_num, $item) {
-        //FIXME
-        
-        $this->orders->add_item($order_num, $item);
-        redirect('/order/display_menu/' . $order_num);
-    }
-
-    // checkout
-    function checkout($order_num) {
-        $this->data['title'] = 'Checking Out';
-        $this->data['pagebody'] = 'show_order';
-        $this->data['order_num'] = $order_num;
-        //FIXME
-        $this->data['okornot'] = $this->orders->validate($order_num) ? "" : "disabled";
-        $this->data['total'] = number_format($this->orders->total($order_num),2);
-        $items = $this->orderitems->group($order_num);
-        foreach($items as $item)
-        {
-            $menuitem =$this->menu->get($item->item);
-            $item->code = $menuitem->name;
-            
-        }
-
-        $this->data['items'] =$items;
-        
-        $this->render();
-    }
-
-    // proceed with checkout
-    function proceed($order_num) {
-        //FIXME
-        if(!$this->orders->validate($order_num))
-            redirect('/order/display_menu/'.$order_num);
-        $record = $this->orders->get($order_num);
-        $record->date = date(DATE_ATOM);
-        $record->status = 'c';
-        $record->total = $this->orders->total($order_num);
-        $this->orders->update($record);
-        
-        redirect('/');
-    }
-
-    // cancel the order
-    function cancel($order_num) {
-        //FIXME
-        $this->orderitems->delete_some($order_num);
-        $record = $this->orders->get($order_num);
-        $record->status = 'x';
-        $this->orders->update($record);
-        
-        redirect('/');
-    }
-*/
 }
