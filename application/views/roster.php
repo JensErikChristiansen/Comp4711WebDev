@@ -10,8 +10,8 @@ and open the template in the editor.
 
 
 <div class="btn-group btn-group-justified">
-	<a href="/roster/layout/TABLE" class="btn btn-lg btn-warning" role="button">Table Display</a>
-	<a href="/roster/layout/GALLERY" class="btn btn-lg btn-info">Gallery Display</a>
+	<a href="/roster/layout/TABLE" class="btn btn-lg btn-primary" role="button">View as Table</a>
+	<a href="/roster/layout/GALLERY" class="btn btn-lg btn-primary">View as Gallery</a>
 </div>
 
 <br>
@@ -28,6 +28,5 @@ and open the template in the editor.
 	</ul>
 </div>
 {newPlayerButton}
-
 {theview}
 {pagination}

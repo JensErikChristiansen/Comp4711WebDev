@@ -15,75 +15,111 @@ class Player extends Application {
         parent::__construct();
         $this->load->helper('formfields');
         $this->errors = array();
-        $this->playerTemp = $this->rosters->create();
     }
     
     function updatePlayer() {
+        $playerTemp = $this->parsePlayerBuffer();
+
         $postValues = array();
         $postValues = $this->input->post(NULL, TRUE);
+
         foreach($postValues as $key => $value) {
-            $this->playerTemp->$key = $value;
+            $playerTemp->$key = $value;
         }
-        $this->rosters->update($this->playerTemp);
+
+        $this->rosters->update($playerTemp);
         redirect('/roster');
     }
 
-    
     function validate() {
-        
-        //$player = $this->rosters->create();
+        $playerTemp = $this->parsePlayerBuffer();
+
         foreach ($_POST as $key => $value) {
-            $this->playerTemp->$key = $_POST[$key];
+            $playerTemp->$key = $_POST[$key];
         }
-        //$player = $this->session->get_userdata('tempPlayer');
-        if (empty($this->playerTemp->Name)) {
+
+        $this->session->set_userdata('playerTemp', $playerTemp);
+
+        // check if name is empty
+        if (empty($playerTemp->Name)) {
             $this->errors[] = 'You must enter a name.';
         }
         
-        // if ($this->rosters->exists($this->db->where('playerNo ==', $player->playerNo))) {
-        //     $this->errors[] = 'jersey number already exists';
-        // }
+        // check if player number is already in database
+        if ($this->rosters->exists('PlayerNo', $playerTemp->PlayerNo)) {
+            $this->errors[] = 'jersey number already exists';
+        }
+
+        // check if position is valid
+        $positions = array(
+            "C", "DB", "DE", "DL", "DT", "E", "FB", "FL", "G", "HB", "K", 
+            "LB", "MLB", "NG", "NT", "OG", "OL", "OLB", "OT", "P", "QB", 
+            "RB", "S", "SE", "T", "TB", "TE", "WB", "WR"
+        );
+
+        for ($i = 0; $i < count($positions); $i++) {
+            if (strtolower($playerTemp->Pos) == strtolower($positions[$i])) {
+                break;
+            }
+            if ($i == count($positions) - 1) {
+                $this->errors[] = 'must have a valid position';
+            }
+        }
 
         if (count($this->errors) > 0) {
-            $this->displayPlayer($this->playerTemp->ID, true);
+            $this->displayPlayer($playerTemp->ID, true);
             return; // make sure we don't try to save anything
         }
+
+        if ($this->rosters->exists($playerTemp->ID)) {
+            $this->updatePlayer();
+        } else {
+            $this->rosters->add($playerTemp);
+        }
         
-        $this->errors = array();
+        redirect('/roster');
         
     }
     
-    function displayPlayerFromDatabase($ID) {
-        $this->playerTemp = $this->rosters->get($ID);
-        $this->data['sumfin'] = "Photo: " . $this->playerTemp->Photo;
+    function loadPlayerFromDb($ID) {
+        $playerTemp = $this->rosters->get($ID);
+        $this->session->set_userdata('playerTemp', $playerTemp);
+        return $playerTemp;
     }
     
     function createPlayer() {
-        $this->playerTemp = $this->rosters->create();
+        $playerTemp = $this->rosters->create();
         
-        $this->playerTemp->ID = $this->rosters->highest() + 1;
-        $this->playerTemp->PlayerNo = '';
-        $this->playerTemp->Name = '';
-        $this->playerTemp->Pos = '';
-        $this->playerTemp->Status = '';
-        $this->playerTemp->Height = '';
-        $this->playerTemp->Weight = '';
-        $this->playerTemp->Birthdate = date(DATE_ATOM);
-        $this->playerTemp->Experience = '';
-        $this->playerTemp->College = '';
-        $this->playerTemp->Code = '';
-        $this->playerTemp->Photo = 'default.jpg';
+        $playerTemp->ID = $this->rosters->highest() + 1;
+        $playerTemp->PlayerNo = '';
+        $playerTemp->Name = '';
+        $playerTemp->Pos = '';
+        $playerTemp->Status = '';
+        $playerTemp->Height = '';
+        $playerTemp->Weight = '';
+        $playerTemp->Birthdate = date(DATE_ATOM);
+        $playerTemp->Experience = '';
+        $playerTemp->College = '';
+        $playerTemp->Code = '';
+        $playerTemp->Photo = 'default.jpg';
+        $this->session->set_userdata('playerTemp', $playerTemp);
         //$player->PlayerUpdated = 'e';
+
+        return $playerTemp;
     }
 
-    function displayPlayer($ID = null, $invalid = false) {
+    function displayPlayer($ID = null, $invalidEntry = false) {
         $this->session->set_userdata('editPage', '/player/displayPlayer/' . $ID);
         
         // If null, we are creating a new player
         if ($ID === null) {
-            $this->createPlayer();
-        } else if (!$invalid) {
-            $this->displayPlayerFromDatabase($ID);
+            $playerTemp = $this->createPlayer();
+        // If displayPlayer is being recalled from validation, it is therefore invalid.
+        } else if ($invalidEntry) {
+            $playerTemp = $this->parsePlayerBuffer();
+        // Retrieve player from database with ID
+        } else {
+            $playerTemp = $this->loadPlayerFromDb($ID);
         }
         
         // determine if we're in edit mode
@@ -96,20 +132,21 @@ class Player extends Application {
         $message = '';
         
         if (count($this->errors) > 0) {
-            foreach ($this->errors as $booboo)
-              $message .= $booboo . "<BR>";
+            foreach ($this->errors as $booboo) {
+                $message .= $booboo . "<BR>";
+            }
         }
         
         $this->data['message'] = $message;
         
         // make text fields for each key value pair
-        foreach ($this->playerTemp as $key => $val) {
+        foreach ($playerTemp as $key => $val) {
             $this->data[$key] = makeTextField($key, $key, $val, "", 40, 15, !$editMode);
         }
         
         // override previous foreach loop: ID and Photo are not text fields
-        $this->data['ID'] = $this->playerTemp->ID;
-        $this->data['Photo'] = $this->playerTemp->Photo;
+        $this->data['ID'] = $playerTemp->ID;
+        $this->data['Photo'] = $playerTemp->Photo;
         
         $this->data['Submit'] = "";
         $this->data['Cancel'] = "";
@@ -138,6 +175,19 @@ class Player extends Application {
     function delete($ID){
        $this->rosters->delete($ID);
        redirect('/roster');
+    }
+
+    // Utility function to get player session variable and convert it
+    // to an active record object.
+    function parsePlayerBuffer() {
+        $playerBuffer = $this->session->userdata('playerTemp');
+        $playerTemp = $this->rosters->create();
+
+        foreach($playerBuffer as $key => $value) {
+            $playerTemp->$key = $value;
+        }
+
+        return $playerTemp;
     }
     
 }
