@@ -4,35 +4,29 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<h1>Steelers Roster</h1>
+<div class="jumbotron container-fluid">
+	<h1>Pittsburgh Steelers</h1>
+</div>
 
-<a href="/roster/layout/0" class="btn btn-large btn-primary"> Table  Display </a><br>
-<a href="/roster/layout/1" class="btn btn-large btn-primary">Gallery Display</a><br>
-<a href="/roster/orderby/playerno" class="btn btn-large btn-primary">Order by Player Number</a><br>
-<a href="/roster/orderby/name" class="btn btn-large btn-primary">Order by Name</a><br>
-<a href="/roster/orderby/position" class="btn btn-large btn-primary">Order by Position</a><br>
 
+<div class="btn-group btn-group-justified">
+	<a href="/roster/layout/TABLE" class="btn btn-lg btn-primary" role="button">View as Table</a>
+	<a href="/roster/layout/GALLERY" class="btn btn-lg btn-primary">View as Gallery</a>
+</div>
+
+<br>
+<br>
+
+<div class="btn-group">
+	<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+		Sort <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="/roster/orderBy/playerno">Player Number</a></li>
+		<li><a href="/roster/orderBy/name">Name</a></li>
+		<li><a href="/roster/orderBy/position">Position</a></li>
+	</ul>
+</div>
+{newPlayerButton}
 {theview}
-
-
-<!-- <table class="table">
-	<tr>
-		<td>Photo</td>
-        <td>Number</td>
-		<td>Name</td>
-        <td>Position</td>
-        <td>Status</td>
-		<td>Height</td>
-	</tr>
-	{roster}
-		<tr>
-			<td><img src="/assets/data/img/{Photo}" title='{name}'></td>
-            <td>{No}</td>
-			<td>{Name}</td>
-			<td>{Pos}</td>
-			<td>{Status}</td>
-			<td>{Height}</td>
-		</tr>
-	{/roster}
-</table>
- -->
+{pagination}

@@ -10,8 +10,14 @@ and open the template in the editor.
         <img src="/assets/data/img/{Photo}">
     </div>
     <div class="col-xs-6">
-        
-        <form action ="/Player/confirm/{ID}" method="post">
+        <div style="
+            color: red;
+            font-weight: bold;
+            font-size: 1.5em;
+            ">
+            {message}
+        </div>
+        <form action="/Player/validate" method="post">
             {Name}
             {PlayerNo}
             {Pos}

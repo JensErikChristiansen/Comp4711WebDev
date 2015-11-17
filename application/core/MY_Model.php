@@ -224,7 +224,12 @@ class MY_Model extends CI_Model implements Active_Record {
 
     // Determine if a key exists
     function exists($key, $key2 = null) {
-        $this->db->where($this->_keyField, $key);
+        if ($key2 === null) {
+            $this->db->where($this->_keyField, $key);
+        } else {
+            $this->db->where($key, $key2);
+        }
+        
         $query = $this->db->get($this->_tableName);
         if ($query->num_rows() < 1)
             return false;
@@ -258,10 +263,7 @@ class MY_Model extends CI_Model implements Active_Record {
     // Return filtered records as an array of records
     function some($what, $which) {
         $this->db->order_by($this->_keyField, 'asc');
-        if (($what == 'period') && ($which < 9)) {
-            $this->db->where($what, $which); // special treatment for period
-        } else
-            $this->db->where($what, $which);
+        $this->db->where($what, $which);
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }

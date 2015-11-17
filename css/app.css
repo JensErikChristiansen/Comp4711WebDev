@@ -1,27 +1,8 @@
-.ui.segment.stripe {
-	margin-top: 5rem;
-	margin-bottom: 5rem;
+.jumbotron {
+	background: rgba(250, 250, 250, .9);
 }
-.appContainer {
-  margin-top: 7rem;
-  flex: 1;
-}
-.appCenterVertical {
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-}
-#appRosterCards {
-	display: flex;
-	justify-content: space-around;
-}
-#appMasthead{
-	margin-top: -7rem;
-	height: 35rem;
-} 
-#appContent {
-	display: flex;
-	flex-direction: column;
-	align-content: space-between;
-	min-height: 100vh;
+.table {
+	border: 1px solid #ccc;
+	background: rgba(250, 250, 250, .95);
+	box-shadow: 0 3px 1px rgba(0, 0, 0, .2);
 }
