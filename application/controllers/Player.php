@@ -38,6 +38,11 @@ class Player extends Application {
             $playerTemp->$key = $_POST[$key];
         }
 
+        // parse int value from dropdown list for Codes
+        $codes = $this->session->userdata('codes');
+        $playerTemp->Code = $codes[$_POST['Code']];
+
+        // update the player session variable
         $this->session->set_userdata('playerTemp', $playerTemp);
 
         // check if name is empty
@@ -46,7 +51,8 @@ class Player extends Application {
         }
         
         // check if player number is already in database
-        if ($this->rosters->exists('PlayerNo', $playerTemp->PlayerNo)) {
+        if ($playerTemp->PlayerUpdated != 'e' && 
+                $this->rosters->exists('PlayerNo', $playerTemp->PlayerNo)) {
             $this->errors[] = 'jersey number already exists';
         }
 
@@ -57,20 +63,23 @@ class Player extends Application {
             "RB", "S", "SE", "T", "TB", "TE", "WB", "WR"
         );
 
+        // search for existing positions
         for ($i = 0; $i < count($positions); $i++) {
             if (strtolower($playerTemp->Pos) == strtolower($positions[$i])) {
                 break;
             }
-            if ($i == count($positions) - 1) {
+            if ($i == count($positions)) {
                 $this->errors[] = 'must have a valid position';
             }
         }
 
+        // display errors, if any
         if (count($this->errors) > 0) {
             $this->displayPlayer($playerTemp->ID, true);
             return; // make sure we don't try to save anything
         }
 
+        // update or add player
         if ($this->rosters->exists($playerTemp->ID)) {
             $this->updatePlayer();
         } else {
@@ -83,6 +92,7 @@ class Player extends Application {
     
     function loadPlayerFromDb($ID) {
         $playerTemp = $this->rosters->get($ID);
+        $playerTemp->PlayerUpdated = 'e';
         $this->session->set_userdata('playerTemp', $playerTemp);
         return $playerTemp;
     }
@@ -102,9 +112,9 @@ class Player extends Application {
         $playerTemp->College = '';
         $playerTemp->Code = '';
         $playerTemp->Photo = 'default.jpg';
+        $playerTemp->PlayerUpdated = '0';
         $this->session->set_userdata('playerTemp', $playerTemp);
-        //$player->PlayerUpdated = 'e';
-
+        
         return $playerTemp;
     }
 
@@ -147,6 +157,27 @@ class Player extends Application {
         // override previous foreach loop: ID and Photo are not text fields
         $this->data['ID'] = $playerTemp->ID;
         $this->data['Photo'] = $playerTemp->Photo;
+
+        // Get all Codes from standings table and populate dropdown list
+        $this->db->select('Code');
+        $query = $this->db->get('standings');
+
+        foreach ($query->result() as $row) {
+            $codes[] = $row->Code;
+        }
+
+        $this->session->set_userdata('codes', $codes);
+
+        $this->data['Code'] = makeComboField(
+            'Code', // label
+            "Code", //name
+            24, //value
+            $codes, //options
+            "", // explain
+            40, //maxlen
+            15, //size
+            !$editMode
+        );
         
         $this->data['Submit'] = "";
         $this->data['Cancel'] = "";

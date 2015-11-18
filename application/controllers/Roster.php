@@ -103,8 +103,6 @@ class Roster extends Application {
         $this->load->library('table');
         $parms = array(
             'table_open' => '<table class="table">',
-            
-
         );
         $this->table->set_template($parms);
 
@@ -121,16 +119,18 @@ class Roster extends Application {
             $cells[] = $this->parser->parse('_gallery', (array) $row, true);
         }
 
-        $this->load->library('table');
-        $parms = array(
-            'table_open' => '<table class="gallery">',
-            'cell_start' => '<td class="oneimage">',
-            'cell_alt_start' => '<td class="oneimage">'
-        );
-        $this->table->set_template($parms);
+        // $this->parser->parse('_gallery', $arr->rows(), true);
 
-        $rows = $this->table->make_columns($cells, 3);
-        $this->data['theview'] = $this->table->generate($rows);
+        // $this->load->library('table');
+        // $parms = array(
+        //     'table_open' => '<table class="gallery">',
+        //     'cell_start' => '<td class="oneimage">',
+        //     'cell_alt_start' => '<td class="oneimage">'
+        // );
+        // $this->table->set_template($parms);
+
+        // $rows = $this->table->make_columns($cells, 3);
+        // $this->data['theview'] = $this->table->generate($rows);
         //$this->data['theview'] = $cells;
     }
     
