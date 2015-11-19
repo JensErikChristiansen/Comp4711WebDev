@@ -17,6 +17,7 @@ and open the template in the editor.
 <br>
 <br>
 
+<!-- sort drop-down -->
 <div class="btn-group">
 	<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 		Sort <span class="caret"></span>
@@ -26,7 +27,13 @@ and open the template in the editor.
 		<li><a href="/roster/orderBy/name">Name</a></li>
 		<li><a href="/roster/orderBy/position">Position</a></li>
 	</ul>
-</div>
+</div><!-- end sort drop down -->
 {newPlayerButton}
+
+<div class="divider"/>
+
 {theview}
+
+<div class="divider"/>
+
 {pagination}

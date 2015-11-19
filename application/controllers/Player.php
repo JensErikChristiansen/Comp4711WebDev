@@ -20,12 +20,12 @@ class Player extends Application {
     function updatePlayer() {
         $playerTemp = $this->parsePlayerBuffer();
 
-        $postValues = array();
-        $postValues = $this->input->post(NULL, TRUE);
+        // $postValues = array();
+        // $postValues = $this->input->post(NULL, TRUE);
 
-        foreach($postValues as $key => $value) {
-            $playerTemp->$key = $value;
-        }
+        // foreach($postValues as $key => $value) {
+        //     $playerTemp->$key = $value;
+        // }
 
         $this->rosters->update($playerTemp);
         redirect('/roster');
@@ -40,10 +40,8 @@ class Player extends Application {
 
         // parse int value from dropdown list for Codes
         $codes = $this->session->userdata('codes');
-        $playerTemp->Code = $codes[$_POST['Code']];
 
-        // update the player session variable
-        $this->session->set_userdata('playerTemp', $playerTemp);
+        $playerTemp->Code = $codes[$_POST['Code']];
 
         // check if name is empty
         if (empty($playerTemp->Name)) {
@@ -68,10 +66,13 @@ class Player extends Application {
             if (strtolower($playerTemp->Pos) == strtolower($positions[$i])) {
                 break;
             }
-            if ($i == count($positions)) {
+            if ($i == count($positions) - 1) {
                 $this->errors[] = 'must have a valid position';
             }
         }
+
+        // update the player session variable
+        $this->session->set_userdata('playerTemp', $playerTemp);
 
         // display errors, if any
         if (count($this->errors) > 0) {
