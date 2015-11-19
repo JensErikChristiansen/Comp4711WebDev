@@ -1,10 +1,15 @@
 <?php
 ?>
-<div class="row">
-	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-		<a class="thumbnail" href="/player/displayPlayer/{ID}">
-			<img class="img-responsive" src="/assets/data/img/{Photo}">
-			<label>{Name}</label>
-		</a>
-	</div>
-</div>
+<span>
+<a href="/player/displayPlayer/{ID}">
+	<span class="thumbnail"
+		style='
+			width: 100px;
+			height: 100px;
+			background-image: url("/assets/data/img/{Photo}");
+			background-size: cover;
+		'></span>
+	<!-- <img width="100" src="/assets/data/img/{Photo}"> -->
+	<label>{Name}</label>
+</a>
+</span>

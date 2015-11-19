@@ -113,14 +113,19 @@ class Roster extends Application {
     }
 
     function displayGallery($arr) {
-    	//$pix = $this->images->all();
-
-        foreach($arr as $row) {
+    	foreach($arr as $row) {
             $cells[] = $this->parser->parse('_gallery', (array) $row, true);
         }
 
-        // $this->parser->parse('_gallery', $arr->rows(), true);
+        $html = "";
 
+        foreach($cells as $cell) {
+            $html .= $cell;
+        }
+
+        $this->data['theview'] = $html;
+
+        //$this->data['theview'] = $html;
         // $this->load->library('table');
         // $parms = array(
         //     'table_open' => '<table class="gallery">',
@@ -128,10 +133,8 @@ class Roster extends Application {
         //     'cell_alt_start' => '<td class="oneimage">'
         // );
         // $this->table->set_template($parms);
-
         // $rows = $this->table->make_columns($cells, 3);
         // $this->data['theview'] = $this->table->generate($rows);
-        //$this->data['theview'] = $cells;
     }
     
 
