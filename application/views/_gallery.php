@@ -1,13 +1,13 @@
 <?php
 ?>
-<a href="/player/displayPlayer/{ID}">
-	<div class="thumbnail playerViewThumbnail"
+<a class="thumbnail playerViewThumbnail" href="/player/displayPlayer/{ID}">
+	<div
 		style='
-			width: 100px;
-			height: 100px;
+			width: 250px;
+			height: 250px;
 			background-image: url("/assets/data/img/{Photo}");
 			background-size: cover;
 		'></div>
-		<label>{Name}</label>
+		<Label>{Name}</Label>
 	<!-- <img width="100" src="/assets/data/img/{Photo}"> -->
 </a>
