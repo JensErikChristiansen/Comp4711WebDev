@@ -4,16 +4,30 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<h1>The League</h1>
-<table class="table">
+<h1>Standings</h1>
+<!-- group-by drop-down -->
+<div class="btn-group">
+	<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+		Group By<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="/league/groupBy/LEAGUE">League</a></li>
+		<li><a href="/league/groupBy/CONFERENCE">Conference</a></li>
+		<li><a href="/league/groupBy/DIVISION">Division</a></li>
+	</ul>
+</div><!-- end group-by drop down -->
+
+{thetable}
+
+<!-- <table class="table">
 	<tr>
-		<td>Logo</td>
-		<td><a href="/league/orderby/id">ID</a></td>
-		<td><a href="/league/orderby/name">Name</a></td>
-		<td><a href="/league/orderby/wins">Wins</a></td>
-		<td><a href="/league/orderby/losses">Losses</a></td>
-		<td>Ties</td>
-		<td>League</td>
+		<th>Logo</th>
+		<th><a href="/league/orderBy/id">ID</a></th>
+		<th><a href="/league/orderBy/name">Name</a></th>
+		<th><a href="/league/orderBy/wins">Wins</a></th>
+		<th><a href="/league/orderBy/losses">Losses</a></th>
+		<th>Ties</th>
+		<th>League</th>
 	</tr>
 	{teams}
 		<tr>
@@ -26,4 +40,4 @@ and open the template in the editor.
 			<td>{League}</td>
 		</tr>
 	{/teams}
-</table>
+</table> -->

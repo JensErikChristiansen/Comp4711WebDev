@@ -6,8 +6,8 @@ and open the template in the editor.
 -->
 
 <div class="row">
-    <div class="col-xs-6 img-responsive thumbnail">
-        <img src="/assets/data/img/{Photo}">
+    <div class="col-xs-6 thumbnail">
+        <img src="/assets/data/img/{Photo}" class="playerViewThumb">
     </div>
     <div class="col-xs-6">
         <div style="
@@ -27,10 +27,9 @@ and open the template in the editor.
             {Birthdate}
             {Experience}
             {College}
-            {Code}            
-            {Submit}
-            {Cancel}
-            {Delete}
+            {Code}
+            <br>
+            {Submit}{Cancel}{Delete}
         </form>
     </div>
 </div>

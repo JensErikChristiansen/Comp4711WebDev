@@ -103,8 +103,6 @@ class Roster extends Application {
         $this->load->library('table');
         $parms = array(
             'table_open' => '<table class="table">',
-            
-
         );
         $this->table->set_template($parms);
 
@@ -115,23 +113,28 @@ class Roster extends Application {
     }
 
     function displayGallery($arr) {
-    	//$pix = $this->images->all();
-
-        foreach($arr as $row) {
+    	foreach($arr as $row) {
             $cells[] = $this->parser->parse('_gallery', (array) $row, true);
         }
 
-        $this->load->library('table');
-        $parms = array(
-            'table_open' => '<table class="gallery">',
-            'cell_start' => '<td class="oneimage">',
-            'cell_alt_start' => '<td class="oneimage">'
-        );
-        $this->table->set_template($parms);
+        $html = "";
 
-        $rows = $this->table->make_columns($cells, 3);
-        $this->data['theview'] = $this->table->generate($rows);
-        //$this->data['theview'] = $cells;
+        foreach($cells as $cell) {
+            $html .= $cell;
+        }
+
+        $this->data['theview'] = $html;
+
+        //$this->data['theview'] = $html;
+        // $this->load->library('table');
+        // $parms = array(
+        //     'table_open' => '<table class="gallery">',
+        //     'cell_start' => '<td class="oneimage">',
+        //     'cell_alt_start' => '<td class="oneimage">'
+        // );
+        // $this->table->set_template($parms);
+        // $rows = $this->table->make_columns($cells, 3);
+        // $this->data['theview'] = $this->table->generate($rows);
     }
     
 
