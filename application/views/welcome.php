@@ -8,6 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </head>
 <body>
-    <h1>Welcome to Steelers!!!!</h1>
+    <h1>NFL Predictor</h1>
+    <form name="predictionForm" id="predictionForm" action="" method="post">
+
+    	
+
+    </form>
+    <div id="results"></div>
 </body>
 </html>
