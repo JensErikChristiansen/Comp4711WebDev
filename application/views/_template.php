@@ -37,9 +37,7 @@ and open the template in the editor.
             </nav>
        </div>
        <div id="content">
-            <div class="container">
-             {content}
-            </div>
+            {content}
         </div>
     </body>
 </html>

@@ -27,4 +27,13 @@ class Teams extends MY_Model {
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
+
+    // Retrieve an existing DB record as an object
+    function getFromCode($code) {
+        $this->db->where('Code', $code);
+        $query = $this->db->get($this->_tableName);
+        if ($query->num_rows() < 1)
+            return null;
+        return $query->row();
+    }
 }

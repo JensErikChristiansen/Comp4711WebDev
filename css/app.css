@@ -1,5 +1,8 @@
 .jumbotron {
-	background: rgba(250, 250, 250, .9);
+	background: rgba(50, 125, 255, .75);
+}
+.jumbotron h1 {
+	color: #efefef;
 }
 .table {
 	border: 1px solid #ccc;
@@ -32,4 +35,14 @@
 	border-radius: 2px;
 	box-shadow: 2px 2px 1px rgba(0, 0, 0, .2);
 	font-weight: bold;
+}
+.bg-danger {
+	font-weight: bold;
+	padding: 10px;
+	box-shadow: 2px 2px 1px rgba(0, 0, 0, .2);
+}
+.center {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
 }

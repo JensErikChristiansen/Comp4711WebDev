@@ -5,15 +5,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-
 </head>
 <body>
-    <h1>NFL Predictor</h1>
-    <form name="predictionForm" id="predictionForm" action="" method="post">
+	<div class="jumbotron">
+		<div class="container">
+		    <h1>NFL Predictor</h1>
+	    </div>
+    </div>
 
-    	
-
-    </form>
-    <div id="results"></div>
+    <div class="container">
+    	<div class="row">
+    		<div class="col-sm-6 text-right">
+				<h4>Your Team: Steelers</h4>
+			</div>
+		    <form class="col-sm-6 text-left" name="predictionForm" id="predictionForm" action="/welcome/predict" method="post">
+				<select id="codeSelect" name="codeSelect" style="width: 15em; margin-right: 20px;">
+					{Codes}
+						<option value="{Code}">{Code} - {TeamName}</option>
+					{/Codes}
+				</select>
+				{Submit}
+		    </form>
+		</div> <!-- end row -->
+		<h3 class="text-center">VS</h3>
+		{ResultsHeading}
+	    <div class="row">
+			<div class="col-sm-6">
+		    	{YourResults}
+		    </div>
+		    <div class="col-sm-6">
+		    	{OpponentResults}
+		    </div>
+		</div>
+	</div>
 </body>
 </html>
