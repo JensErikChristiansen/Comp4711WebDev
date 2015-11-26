@@ -20,13 +20,6 @@ class Player extends Application {
     function updatePlayer() {
         $playerTemp = $this->parsePlayerBuffer();
 
-        // $postValues = array();
-        // $postValues = $this->input->post(NULL, TRUE);
-
-        // foreach($postValues as $key => $value) {
-        //     $playerTemp->$key = $value;
-        // }
-
         $this->rosters->update($playerTemp);
         redirect('/roster');
     }

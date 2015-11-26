@@ -28,18 +28,17 @@ and open the template in the editor.
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/league">League</a></li>
-                        <li><a href="/roster">Roster</a></li>
+                        <li><a href="/league">Standings</a></li>
+                        <li><a href="/roster">Your Roster</a></li>
                         <li><a href="/about">About</a></li>
-                        <li><a href="/roster/editMode">Edit Mode</a></li>
+                        <li><a href="/history">History</a></li>
+                        <li><a href="/roster/editMode">Edit Mode <span class="badge">{EditMode}</span></a></li>
                     </ul>
                 </div>
             </nav>
        </div>
        <div id="content">
-            <div class="container">
-             {content}
-            </div>
+            {content}
         </div>
     </body>
 </html>

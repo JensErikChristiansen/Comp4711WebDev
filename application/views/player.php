@@ -1,11 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-<div class="row">
+<div class="container">
     <div class="col-xs-6 thumbnail">
         <img src="/assets/data/img/{Photo}" class="playerViewThumb">
     </div>
@@ -33,5 +27,3 @@ and open the template in the editor.
         </form>
     </div>
 </div>
-        
-

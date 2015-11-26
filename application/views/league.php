@@ -4,20 +4,26 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<h1>Standings</h1>
-<!-- group-by drop-down -->
-<div class="btn-group">
-	<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-		Group By<span class="caret"></span>
-	</a>
-	<ul class="dropdown-menu">
-		<li><a href="/league/groupBy/LEAGUE">League</a></li>
-		<li><a href="/league/groupBy/CONFERENCE">Conference</a></li>
-		<li><a href="/league/groupBy/DIVISION">Division</a></li>
-	</ul>
-</div><!-- end group-by drop down -->
+<div class="jumbotron">
+	<div class="container">
+		<h1>Standings</h1>
+	</div>
+</div>
 
-{thetable}
+<div class="container">
+	<!-- group-by drop-down -->
+	<div class="btn-group">
+		<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+			Group By<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href="/league/groupBy/LEAGUE">League</a></li>
+			<li><a href="/league/groupBy/CONFERENCE">Conference</a></li>
+			<li><a href="/league/groupBy/DIVISION">Division</a></li>
+		</ul>
+	</div><!-- end group-by drop down -->
+	{thetable}
+</div> <!-- end .container -->
 
 <!-- <table class="table">
 	<tr>
