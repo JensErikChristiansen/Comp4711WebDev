@@ -17,16 +17,14 @@ class Application extends CI_Controller {
      * Constructor.
      * Establish view parameters & load common helpers
      */
-    function __construct()
-    {
-	parent::__construct();
-//        $this->load->helper('common');
- //       $this->load->helper('url');
-//        $autoload['helper'] = array('common', 'url');
- //       $this->load->library('parser');
-	$this->data = array();
-	$this->data['pagetitle'] = 'Steelers';
-        
+    function __construct() {
+        parent::__construct();
+    	$this->data = array();
+    	$this->data['pagetitle'] = 'Steelers';
+
+        if (!isset($_SESSION['editMode'])) {
+            $this->session->set_userdata('editMode', 'OFF');
+        }
     }
 
     /**
@@ -34,10 +32,11 @@ class Application extends CI_Controller {
      */
     function render()
     {
-	$this->data['menubar'] = build_menu_bar($this->choices);
-	$this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
-	$this->data['data'] = $this->data;
-	$this->parser->parse('_template', $this->data);
+    	$this->data['menubar'] = build_menu_bar($this->choices);
+        $this->data['EditMode'] = $this->session->userdata('editMode') ? "ON" : "OFF";
+    	$this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
+    	$this->data['data'] = $this->data;
+    	$this->parser->parse('_template', $this->data);
         $this->data['caboose_styles'] = $this->caboose->styles();
         $this->data['caboose_scripts'] = $this->caboose->scripts();
         $this->data['caboose_trailings'] = $this->caboose->trailings();

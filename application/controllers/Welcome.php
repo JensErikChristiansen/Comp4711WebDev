@@ -50,24 +50,28 @@ class Welcome extends Application {
 	}
 
 	function predict() {
-		$code = $_POST['codeSelect'];
-		$steelers = $this->teams->getFromCode('PIT');
-		$opponent = $this->teams->getFromCode($code);
-
-		$overallAvg = $opponent->Pct1;
-		$last5String = $opponent->Last_5;
-
-		$fiveGameAvg = ((int)$last5String
-					+ (int)substr(strstr($last5String, "-", false), 1))
-					/ 2;
-
-		//70% * (overall average) 
-		// + 20% * (last 5 games average) 
-		// + 10% * (average of last 5 games against this opponent)
 
 		$this->data['ResultsHeading'] = heading("Results", 2, 'class="text-center bg-danger"');
+
+		// Gather Steelers data
+		$steelers = $this->teams->getFromCode('PIT');
+		$overallAvg = $steelers->Pct1;
+		$fiveGameAvg = (float)$steelers->Last_5 / 5;
+		$steelers->FiveGameAvg = $fiveGameAvg;
 		$this->data['YourResults'] = $this->parser->parse('_predictionResults', $steelers, true);
+
+		// Gather opponent data
+		$code = $_POST['codeSelect'];
+		$opponent = $this->teams->getFromCode($code);
+		$overallAvg = $opponent->Pct1;
+		//(float)substr(strstr($last5String, "-", false), 1)
+		$fiveGameAvg = (float)$opponent->Last_5 / 5;
+		$opponent->FiveGameAvg = $fiveGameAvg;
 		$this->data['OpponentResults'] = $this->parser->parse('_predictionResults', $opponent, true);
+
+		//70% * (overall average)
+		// + 20% * (last 5 games average) 
+		// + 10% * (average of last 5 games against this opponent)
 		$this->render();
 	}
 }

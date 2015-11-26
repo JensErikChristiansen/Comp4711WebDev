@@ -13,4 +13,8 @@
   	<p>Overall Average</p>
     <h4 class="list-group-item-heading">{Pct1}</h4>
   </div>
+  <div class="list-group-item">
+  	<p>5-Game Average</p>
+    <h4 class="list-group-item-heading">{FiveGameAvg}</h4>
+  </div>
 </div>

@@ -146,7 +146,6 @@ class League extends Application {
                 break;
         }
 
-
         $this->index();
     }
 }
