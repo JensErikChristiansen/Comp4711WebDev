@@ -41,9 +41,11 @@ class Teams extends MY_Model {
     // 2015-12-02
     // Fetch XML data and update standings table in db
     function updateStandings() {
-        // load temp.xml from root directory
-        // TODO: read from web service instead
-        $xml = simplexml_load_file('temp.xml');
+        // get xml file from website
+        $xml = simplexml_load_file('http://www.nfl.jlparry.com/standings');
+
+        // original statement to load local xml file
+        // $xml = simplexml_load_file('temp.xml');
 
         // The parent element (besides <standings>) is <team>.
         // Therefore, we will iterate through each <team>.
@@ -98,5 +100,9 @@ class Teams extends MY_Model {
             // Finally, update the db.
             $this->update($team);
         }
+    }
+
+    function makeRequest() {
+
     }
 }
