@@ -7,11 +7,11 @@
  *
  * @author Jens Christiansen, Rosanna Wubs, Nadia Dobrianskaia
  */
-class Teams extends MY_Model2 {
+class Teams extends MY_Model {
     
     // Constructor
     public function __construct() {
-        parent::__construct('standings', 'ID', 'Code');
+        parent::__construct('standings', 'ID');
     }
 
     function getGroups($group) {
@@ -28,7 +28,7 @@ class Teams extends MY_Model2 {
         return $query->result();
     }
 
-    // Retrieve an existing DB record as an object
+    // Retrieve a team based on its Code instead of ID.
     function getFromCode($code) {
         $this->db->where('Code', $code);
         $query = $this->db->get($this->_tableName);
@@ -39,18 +39,43 @@ class Teams extends MY_Model2 {
 
 
     // 2015-12-02
+    // Fetch XML data and update standings table in db
     function updateStandings() {
+        // load temp.xml from root directory
+        // TODO: read from web service instead
         $xml = simplexml_load_file('temp.xml');
 
-        $stuff = "";
-
-
+        // The parent element (besides <standings>) is <team>.
+        // Therefore, we will iterate through each <team>.
         foreach ($xml->team as $element) {
+
+            /* Fetch the actual team from db. I originally 
+                had just used $team = $this->create() and populated
+                $team with the xml data, but it wouldn't have
+                included things like the ID and TeamLogo uri.
+            */
             $team = $this->getFromCode($element['code']);
-            $team->TeamName = (string)$element->fullname;
+
+            // doesn't work because ID and TeamLogo will be null when we update the db!
+            // $team = $this->create();
+
+            /* get ATTRIBUTES from <team> by treating $element
+                like an associative array. Example attributes:
+
+                    code="ARI"
+                    conference="National Football Conference"
+                    division="NFC"
+
+            */
             $team->Conference = (string)$element['conference'];
             $team->Division = (string)$element['division'];
 
+            /* Access CHILD ELEMENTS by treating 
+                $element like an object:*/
+            $team->TeamName = (string)$element->fullname;
+
+            /* Drill down through child elements by treating
+                $element like an object: */
             // totals
             $team->W = (int)$element->totals->wins;
             $team->L = (int)$element->totals->losses;
@@ -70,9 +95,8 @@ class Teams extends MY_Model2 {
             $team->Streak = (string)$element->recent->streak;
             $team->Last_5 = (string)$element->recent->last5;
 
+            // Finally, update the db.
             $this->update($team);
         }
-
-
     }
 }
