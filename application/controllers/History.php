@@ -48,14 +48,16 @@ class History extends Application {
             $team->Last_5 = $element->recent->last5;
 
             // update or add team to db
-            if ($this->teams->exists($team->Code)) {
-                echo "exists";
+            if ($this->teams->exists('Code', $team->Code)) {
+                $stuff .= 'exists<br>';
                 $this->teams->update($team);
             } else {
-                echo "doesn't exist";
+                $stuff .= "doesn't exist<br>";
                 $this->teams->add($team);
             }
         }
+
+        echo $stuff;
 
     }
 

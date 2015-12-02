@@ -82,7 +82,6 @@ class League extends Application {
                     $this->data['thetable'] .= $this->createTable($this->teams->some(
                         'Division', $division->Division, $orderBy));
                 }
-                
             }
         }
     }
@@ -172,6 +171,13 @@ class League extends Application {
                 break;
         }
 
+        $this->index();
+    }
+
+
+    // 2015-12-02
+    function updateStandings() {
+        $this->teams->updateStandings();
         $this->index();
     }
 }
