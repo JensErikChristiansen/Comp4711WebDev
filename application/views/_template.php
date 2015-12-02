@@ -32,6 +32,7 @@ and open the template in the editor.
                         <li><a href="/roster">Your Roster</a></li>
                         <li><a href="/about">About</a></li>
                         <li><a href="/history">History</a></li>
+                        <li><a href="/History/updateStandings">Update Standings</a></li>
                         <li><a href="/roster/editMode">Edit Mode <span class="badge">{EditMode}</span></a></li>
                     </ul>
                 </div>

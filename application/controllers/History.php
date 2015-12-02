@@ -8,39 +8,56 @@ class History extends Application {
 
 	function __construct() {
 		parent::__construct();
-		$this->session->set_userdata('editPage', '/history');
-		//$this->load->view('welcome');
-        $this->data['pagebody'] = 'history';
 	}
 
-	public function index() {
-        $this->render();
-	}
+	// public function index() {
+ //        $this->data['pagebody'] = 'league';
+ //        $this->render();
+	// }
 
-	function createTable($arr) {
-        $this->table->set_heading(  "Logo",
-                                    anchor("/league/orderBy/id", "Code"),
-                                    anchor("/league/orderBy/name", "Name"),
-                                    anchor("/league/orderBy/wins", "Wins"),
-                                    anchor("/league/orderBy/losses", "Losses"),
-                                    "League");
+    function updateStandings() {
+        $xml = simplexml_load_file('temp.xml');
 
-        foreach($arr as $row) {
-            $this->table->add_row(  img(array('src'=>'/assets/data/img/' . $row->TeamLogo)),
-                                    $row->Code,
-                                    $row->TeamName,
-                                    $row->W,
-                                    $row->L,
-                                    $row->League);
+        $stuff = "";
+
+        $team = $this->teams->create();
+
+        foreach ($xml->team as $element) {
+            $team->Code = $element['code'];
+            $team->TeamName = $element->fullname;
+            $team->Conference = $element['conference'];
+            $team->Division = $element['division'];
+
+            // totals
+            $team->W = $element->totals->wins;
+            $team->L = $element->totals->losses;
+            $team->T = $element->totals->ties;
+            $team->PF = $element->totals->for;
+            $team->PA = $element->totals->against;
+            $team->Net_Pts = $element->totals->net;
+
+            // breakdown
+            $team->Home = $element->breakdown->home;
+            $team->Road = $element->breakdown->road;
+            $team->Indiv = $element->breakdown->indiv;
+            $team->Conf = $element->breakdown->inconf;
+            $team->NonConf = $element->breakdown->nonconf;
+
+            // recent
+            $team->Streak = $element->recent->streak;
+            $team->Last_5 = $element->recent->last5;
+
+            // update or add team to db
+            if ($this->teams->exists($team->Code)) {
+                echo "exists";
+                $this->teams->update($team);
+            } else {
+                echo "doesn't exist";
+                $this->teams->add($team);
+            }
         }
 
-        $parms = array(
-            'table_open' => '<table class="table">'
-        );
-
-        $this->table->set_template($parms);
-
-        //$this->data['thetable'] = $this->table->generate();
-        return $this->table->generate();
     }
+
+	
 }
