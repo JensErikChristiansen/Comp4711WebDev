@@ -43,7 +43,6 @@ class Teams extends MY_Model {
     function updateStandings() {
         // get xml file from website
         $xml = simplexml_load_file('http://www.nfl.jlparry.com/standings');
-
         // original statement to load local xml file
         // $xml = simplexml_load_file('temp.xml');
 
@@ -61,13 +60,12 @@ class Teams extends MY_Model {
             // doesn't work because ID and TeamLogo will be null when we update the db!
             // $team = $this->create();
 
-            /* get ATTRIBUTES from <team> by treating $element
+            /*  get ATTRIBUTES from <team> by treating $element
                 like an associative array. Example attributes:
 
                     code="ARI"
                     conference="National Football Conference"
                     division="NFC"
-
             */
             $team->Conference = (string)$element['conference'];
             $team->Division = (string)$element['division'];
@@ -87,15 +85,15 @@ class Teams extends MY_Model {
             $team->Net_Pts = (int)$element->totals->net;
 
             // breakdown
-            $team->Home = (string)$element->breakdown->home;
-            $team->Road = (string)$element->breakdown->road;
-            $team->Indiv = (string)$element->breakdown->indiv;
-            $team->Conf = (string)$element->breakdown->inconf;
-            $team->NonConf = (string)$element->breakdown->nonconf;
+            // $team->Home = (string)$element->breakdown->home;
+            // $team->Road = (string)$element->breakdown->road;
+            // $team->Indiv = (string)$element->breakdown->indiv;
+            // $team->Conf = (string)$element->breakdown->inconf;
+            // $team->NonConf = (string)$element->breakdown->nonconf;
 
             // recent
-            $team->Streak = (string)$element->recent->streak;
-            $team->Last_5 = (string)$element->recent->last5;
+            // $team->Streak = (string)$element->recent->streak;
+            // $team->Last_5 = (string)$element->recent->last5;
 
             // Finally, update the db.
             $this->update($team);

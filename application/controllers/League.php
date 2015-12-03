@@ -60,7 +60,7 @@ class League extends Application {
         $this->data['thetable'] .= heading("Conferences", 2, 'class=""');
 
         foreach ($conferences as $conference) {
-            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading"');
+            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading shadow"');
             $this->data['thetable'] .= $this->createTable($this->teams->some(
                 'Conference', $conference->Conference, $orderBy));
         }
@@ -73,12 +73,12 @@ class League extends Application {
         $this->data['thetable'] .= heading("Divisions", 2, 'class=""');
 
         foreach ($conferences as $conference) {
-            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading"');
+            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading shadow"');
             $divisions = $this->teams->getGroups('Division');
             
             foreach ($divisions as $division) {
                 if ($division->Conference == $conference->Conference) {
-                    $this->data['thetable'] .= heading($division->Division, 4, 'class="divisionHeading"');
+                    $this->data['thetable'] .= heading($division->Division, 4, 'class="divisionHeading shadow"');
                     $this->data['thetable'] .= $this->createTable($this->teams->some(
                         'Division', $division->Division, $orderBy));
                 }
@@ -97,14 +97,14 @@ class League extends Application {
                                     "Conference",
                                     "For",
                                     "Against",
-                                    "Net",
-                                    "Home",
-                                    "Road",
-                                    "Indiv",
-                                    "Conf",
-                                    "NonConf",
-                                    "Streak",
-                                    "Last 5"
+                                    "Net"
+                                    //"Home",
+                                    //"Road",
+                                    //"Indiv",
+                                    //"Conf",
+                                    //"NonConf",
+                                    //"Streak",
+                                    //"Last 5"
                                     );
 
         foreach($arr as $row) {
@@ -118,19 +118,19 @@ class League extends Application {
                                     $row->Conference,
                                     $row->PF,
                                     $row->PA,
-                                    $row->Net_Pts,
-                                    $row->Home,
-                                    $row->Road,
-                                    $row->Indiv,
-                                    $row->Conf,
-                                    $row->NonConf,
-                                    $row->Streak,
-                                    $row->Last_5
+                                    $row->Net_Pts
+                                    // $row->Home,
+                                    // $row->Road,
+                                    // $row->Indiv,
+                                    // $row->Conf,
+                                    // $row->NonConf,
+                                    // $row->Streak,
+                                    // $row->Last_5
                                     );
         }
 
         $parms = array(
-            'table_open' => '<table class="table">'
+            'table_open' => '<table class="table shadow">'
         );
 
         $this->table->set_template($parms);

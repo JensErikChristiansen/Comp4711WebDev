@@ -127,7 +127,7 @@ class MY_Model extends CI_Model implements Active_Record {
      * @param string $tablename Name of the RDB table
      * @param string $keyfield  Name of the primary key field
      */
-    function __construct($tablename = null, $keyfield = 'id') {
+    function __construct($tablename = null, $keyfield = 'ID') {
         parent::__construct();
 
         if ($tablename == null)

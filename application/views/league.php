@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<div class="jumbotron">
+<div class="jumbotron shadow">
 	<div class="container">
 		<h1>Standings</h1>
 	</div>
