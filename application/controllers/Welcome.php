@@ -49,6 +49,7 @@ class Welcome extends Application {
         // );
 	}
 
+    
 	function predict() {
 
 		$this->data['ResultsHeading'] = heading("Results", 2, 'class="text-center bg-danger"');
@@ -74,72 +75,91 @@ class Welcome extends Application {
 		// + 10% * (average of last 5 games against this opponent)
 		$this->render();
 	}
-        
-        function updateScores() {
-            $this->load->model('scores');
-            $this->scores->delete_all(); //delete all previous data
-            $list = array();
-            $url = "nfl.jlparry.com/rpc";
-            $this->load->library('xmlrpc');
-            $this->xmlrpc->server($url, 80);
-            $this->xmlrpc->method('since');
-            $request = array('20150830');
-            $this->xmlrpc->request($request);
-            if ( ! $this->xmlrpc->send_request())
-            {
-            echo "Error: " . $this->xmlrpc->display_error();
-            }
-            $list = $this->xmlrpc->display_response();
-            
-            // prepare the list for presentation
-            $scores = array();
 
-            foreach ($list as $key => $value)
-            {
-                $nums = array();
-                $row = array('id' => $value['number'], 'date' => $value['date'], 'code' => $value['home'], 'opponentCode' => $value['away'], 'score1' => $value['score'], 'score2' => $value['score']);
-                $nums = explode(':',$row['score1']);
-                $row['score1'] = $nums[0];
-                $row['score2'] = $nums[1];
-                $scores[] = $row;
-                
-                //getting the next ID
-                 $scores_num = $this->scores->highest() +1;
-                 $newscore = $this->scores->create();
-                 
-                 $newscore->ID = $scores_num;
-                 $newscore->Code = $value['home'];
-                 $newscore->Date = $value['date'];
-                 $newscore->ScoreHome = $nums[0];
-                 $newscore->OpponentCode = $value['away'];
-                 $newscore->ScoreOpponent = $nums[1];
-                // var_dump($newscore);
-                 
-                 $this->scores->add($newscore);
-                 
-                 $newscore1 = $this->scores->create();
-                 
-                 $newscore1->ID = $scores_num + 1;
-                 $newscore1->Code = $value['away'];
-                 $newscore1->Date = $value['date'];
-                 $newscore1->ScoreHome = $nums[1];
-                 $newscore1->OpponentCode = $value['home'];
-                 $newscore1->ScoreOpponent = $nums[0];
-                // var_dump($newscore);
-                 
-                 $this->scores->add($newscore1);
-                                 
-            }
-            
-            
-            
-            //echo count($scores);
-            //sort($scores);
-            $this->data['Scores'] = $scores;
-            // Present the list to choose from
-            $this->data['pagebody'] = 'welcome';
-            $this->render();
+    function getPrediction() {
+        /* Jens is going to work on overall avg and last 5 games avg */
+        // get PIT overall average
+        // get PIT last 5 games average
+        /************************************/
+
+        // get 
+
+        // calculate 70% * PIT overall avg
+        // calculate 20% * PIT last 5 games avg
+        
+        // get last 5 games where Code == PIT and Opponent == the other guys
+        // calculate number of PIT wins and divide by number of games played against opponent
+
+        // calculate 10% * last 5 avg against opponent
+
+        // add them all up
+    }
+        
+    function updateScores() {
+        $this->load->model('scores');
+        $this->scores->delete_all(); //delete all previous data
+        $list = array();
+        $url = "nfl.jlparry.com/rpc";
+        $this->load->library('xmlrpc');
+        $this->xmlrpc->server($url, 80);
+        $this->xmlrpc->method('since');
+        $request = array('20150830');
+        $this->xmlrpc->request($request);
+        if ( ! $this->xmlrpc->send_request())
+        {
+        echo "Error: " . $this->xmlrpc->display_error();
         }
+        $list = $this->xmlrpc->display_response();
+        
+        // prepare the list for presentation
+        $scores = array();
+
+        foreach ($list as $key => $value)
+        {
+            $nums = array();
+            $row = array('id' => $value['number'], 'date' => $value['date'], 'code' => $value['home'], 'opponentCode' => $value['away'], 'score1' => $value['score'], 'score2' => $value['score']);
+            $nums = explode(':',$row['score1']);
+            $row['score1'] = $nums[0];
+            $row['score2'] = $nums[1];
+            $scores[] = $row;
+            
+            //getting the next ID
+             $scores_num = $this->scores->highest() +1;
+             $newscore = $this->scores->create();
+             
+             $newscore->ID = $scores_num;
+             $newscore->Code = $value['home'];
+             $newscore->Date = $value['date'];
+             $newscore->ScoreHome = $nums[0];
+             $newscore->OpponentCode = $value['away'];
+             $newscore->ScoreOpponent = $nums[1];
+            // var_dump($newscore);
+             
+             $this->scores->add($newscore);
+             
+             $newscore1 = $this->scores->create();
+             
+             $newscore1->ID = $scores_num + 1;
+             $newscore1->Code = $value['away'];
+             $newscore1->Date = $value['date'];
+             $newscore1->ScoreHome = $nums[1];
+             $newscore1->OpponentCode = $value['home'];
+             $newscore1->ScoreOpponent = $nums[0];
+            // var_dump($newscore);
+             
+             $this->scores->add($newscore1);
+                             
+        }
+        
+        
+        
+        //echo count($scores);
+        //sort($scores);
+        $this->data['Scores'] = $scores;
+        // Present the list to choose from
+        $this->data['pagebody'] = 'welcome';
+        $this->render();
+    }
         
         
         

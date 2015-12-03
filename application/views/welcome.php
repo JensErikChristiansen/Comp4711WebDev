@@ -31,3 +31,7 @@
 	    </div>
 	</div>
 </div>
+
+<script>
+//ajax call here, calls Welcome->getPrediction;
+</script>
