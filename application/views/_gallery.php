@@ -1,6 +1,6 @@
 <?php
 ?>
-<a class="thumbnail playerViewThumbnail" href="/player/displayPlayer/{ID}">
+<a class="thumbnail playerViewThumbnail shadow" href="/player/displayPlayer/{ID}">
 	<div
 		style='
 			width: 250px;
