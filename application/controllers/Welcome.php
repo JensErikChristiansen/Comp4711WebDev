@@ -50,7 +50,7 @@ class Welcome extends Application {
 	}
 
     
-	function predict() {
+	/*function predict() {
 
 		$this->data['ResultsHeading'] = heading("Results", 2, 'class="text-center bg-danger"');
 
@@ -74,25 +74,53 @@ class Welcome extends Application {
 		// + 20% * (last 5 games average) 
 		// + 10% * (average of last 5 games against this opponent)
 		$this->render();
-	}
+	}*/
 
-    function getPrediction() {
+    function predict() {
         /* Jens is going to work on overall avg and last 5 games avg */
-        // get PIT overall average
-        // get PIT last 5 games average
-        /************************************/
-
-        // get 
-
-        // calculate 70% * PIT overall avg
-        // calculate 20% * PIT last 5 games avg
         
-        // get last 5 games where Code == PIT and Opponent == the other guys
-        // calculate number of PIT wins and divide by number of games played against opponent
+        
+        //---- get PIT overall average and get PIT last 5 games average
+        //Our Team
+        $ourCode = "PIT";
+        $steelersStandings = $this->teams->getFromCode($ourCode);
+        $overallAvg = $steelersStandings->Pct1;
+        //$lastFive = $steelersStandings->Last_5; use this one when standigns are fixed;
+        //----end get PIT overall average and last 5 games
+        
+        $this->load->model('scores');
+        //change this later to get from standings
+        $lastFive = $this->scores->getAvgLast5($ourCode);
 
-        // calculate 10% * last 5 avg against opponent
-
-        // add them all up
+        // Gather opponent code from dropdown
+        $opponentCode = $_POST['codeSelect'];
+        
+        ///--------Predict our points
+        $avgAgainstOpponent = $this->scores->getAvgLast5Opponent($ourCode, $opponentCode);
+        if($avgAgainstOpponent == 0){
+            $pointsUs = ((70 * $overallAvg) + (0.20 * $lastFive))/0.9;
+        }
+        else{
+            $pointsUs = (70 * $overallAvg) + (0.20 * $lastFive) + (0.10 * $avgAgainstOpponent);
+        }
+        echo "Predict that Steelers will get:";
+        echo $pointsUs;
+        ///---------end Predict Our Points
+        
+        /////------------Predict Opponent points
+        $opponentStandings = $this->teams->getFromCode($opponentCode);
+        $overallOpponentAvg = $opponentStandings->Pct1;
+        $lastFiveOpponent = $this->scores->getAvgLast5($opponentCode); //different when standings updated
+        $avgAgainstUs = $this->scores->getAvgLast5Opponent($opponentCode, $ourCode);
+        if($avgAgainstUs == 0){
+            $pointsOpponent = ((70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent))/0.9;
+        }
+        else{
+            $pointsOpponent = (70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent) + (0.10 * $avgAgainstUs);
+        }
+        echo "Predict that Opponents will get:";
+        echo $pointsOpponent;
+        //---------end Predict Opponent score
     }
         
     function updateScores() {
