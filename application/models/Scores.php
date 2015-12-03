@@ -11,11 +11,15 @@
  *
  * @author Nina
  */
-class Rosters extends MY_Model {
+class Scores extends MY_Model {
 
     // Constructor
     public function __construct() {
-        parent::__construct('roster', 'ID');
+        parent::__construct('scores', 'ID');
+    }
+    
+    public function delete_all(){
+        $this->db->empty_table('scores'); 
     }
 
 }

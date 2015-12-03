@@ -76,6 +76,8 @@ class Welcome extends Application {
 	}
         
         function updateScores() {
+            $this->load->model('scores');
+            $this->scores->delete_all();
             $list = array();
             $url = "nfl.jlparry.com/rpc";
             $this->load->library('xmlrpc');
@@ -100,8 +102,25 @@ class Welcome extends Application {
                 $row['score1'] = $nums[0];
                 $row['score2'] = $nums[1];
                 $scores[] = $row;
-
+                
+                //getting the next ID
+                 $scores_num = $this->scores->highest() +1;
+                 $newscore = $this->scores->create();
+                 
+                 $newscore->ID = $scores_num;
+                 $newscore->Code = $value['home'];
+                 $newscore->Date = $value['date'];
+                 $newscore->ScoreHome = $nums[0];
+                 $newscore->OpponentCode = $value['away'];
+                 $newscore->ScoreOpponent = $nums[1];
+                // var_dump($newscore);
+                 
+                 $this->scores->add($newscore);
+                                 
             }
+            
+            
+            
             //echo count($scores);
             //sort($scores);
             $this->data['Scores'] = $scores;
@@ -109,4 +128,7 @@ class Welcome extends Application {
             $this->data['pagebody'] = 'welcome';
             $this->render();
         }
+        
+        
+        
 }

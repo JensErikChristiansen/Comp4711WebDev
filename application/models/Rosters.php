@@ -11,7 +11,7 @@
  *
  * @author Rosanna
  */
-class Scores extends MY_Model {
+class Rosters extends MY_Model {
 
     // Constructor
     public function __construct() {
