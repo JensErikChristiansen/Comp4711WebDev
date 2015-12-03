@@ -7,11 +7,11 @@
  */
 
 /**
- * Description of Scores
+ * Description of Roster
  *
- * @author Rosanna
+ * @author Nina
  */
-class Scores extends MY_Model {
+class Rosters extends MY_Model {
 
     // Constructor
     public function __construct() {

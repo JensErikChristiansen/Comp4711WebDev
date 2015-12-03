@@ -1,3 +1,6 @@
+{Scores}
+<p> {id} {date} {code} {opponentCode} {score1} {score2} </p>
+{/Scores}
 <div class="jumbotron">
 	<div class="container">
 	    <h1>NFL Predictor</h1>
