@@ -77,7 +77,7 @@ class Welcome extends Application {
         
         function updateScores() {
             $this->load->model('scores');
-            $this->scores->delete_all();
+            $this->scores->delete_all(); //delete all previous data
             $list = array();
             $url = "nfl.jlparry.com/rpc";
             $this->load->library('xmlrpc');
@@ -116,6 +116,18 @@ class Welcome extends Application {
                 // var_dump($newscore);
                  
                  $this->scores->add($newscore);
+                 
+                 $newscore1 = $this->scores->create();
+                 
+                 $newscore1->ID = $scores_num + 1;
+                 $newscore1->Code = $value['away'];
+                 $newscore1->Date = $value['date'];
+                 $newscore1->ScoreHome = $nums[1];
+                 $newscore1->OpponentCode = $value['home'];
+                 $newscore1->ScoreOpponent = $nums[0];
+                // var_dump($newscore);
+                 
+                 $this->scores->add($newscore1);
                                  
             }
             
