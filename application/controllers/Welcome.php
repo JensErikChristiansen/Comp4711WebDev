@@ -74,4 +74,39 @@ class Welcome extends Application {
 		// + 10% * (average of last 5 games against this opponent)
 		$this->render();
 	}
+        
+        function updateScores() {
+            $list = array();
+            $url = "nfl.jlparry.com/rpc";
+            $this->load->library('xmlrpc');
+            $this->xmlrpc->server($url, 80);
+            $this->xmlrpc->method('since');
+            $request = array('20150830');
+            $this->xmlrpc->request($request);
+            if ( ! $this->xmlrpc->send_request())
+            {
+            echo "Error: " . $this->xmlrpc->display_error();
+            }
+            $list = $this->xmlrpc->display_response();
+            
+            // prepare the list for presentation
+            $scores = array();
+
+            foreach ($list as $key => $value)
+            {
+                $nums = array();
+                $row = array('id' => $value['number'], 'date' => $value['date'], 'code' => $value['home'], 'opponentCode' => $value['away'], 'score1' => $value['score'], 'score2' => $value['score']);
+                $nums = explode(':',$row['score1']);
+                $row['score1'] = $nums[0];
+                $row['score2'] = $nums[1];
+                $scores[] = $row;
+
+            }
+            //echo count($scores);
+            //sort($scores);
+            $this->data['Scores'] = $scores;
+            // Present the list to choose from
+            $this->data['pagebody'] = 'welcome';
+            $this->render();
+        }
 }
