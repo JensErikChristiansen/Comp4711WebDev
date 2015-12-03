@@ -29,7 +29,7 @@ class League extends Application {
             case 'LEAGUE':
                 $this->displayLeague();
                 break;
-            case 'AreaSeason':
+            case 'Conference':
                 $this->displayConference();
                 break;
             case 'Division':
@@ -55,34 +55,33 @@ class League extends Application {
 
     function displayConference() {
         $this->data['thetable'] = "";
-        $conferences = $this->teams->getGroups('AreaSeason');
+        $conferences = $this->teams->getGroups('Conference');
         $orderBy = $this->session->userdata('orderbyteam');
         $this->data['thetable'] .= heading("Conferences", 2, 'class=""');
 
         foreach ($conferences as $conference) {
-            $this->data['thetable'] .= heading($conference->AreaSeason, 3, 'class="areaSeasonHeading"');
+            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading"');
             $this->data['thetable'] .= $this->createTable($this->teams->some(
-                'AreaSeason', $conference->AreaSeason, $orderBy));
+                'Conference', $conference->Conference, $orderBy));
         }
     }
 
     function displayDivision() {
         $this->data['thetable'] = "";
         $orderBy = $this->session->userdata('orderbyteam');
-        $conferences = $this->teams->getGroups('AreaSeason');
+        $conferences = $this->teams->getGroups('Conference');
         $this->data['thetable'] .= heading("Divisions", 2, 'class=""');
 
         foreach ($conferences as $conference) {
-            $this->data['thetable'] .= heading($conference->AreaSeason, 3, 'class="areaSeasonHeading"');
-            $divisions = $this->teams->getGroups('League');
+            $this->data['thetable'] .= heading($conference->Conference, 3, 'class="ConferenceHeading"');
+            $divisions = $this->teams->getGroups('Division');
             
             foreach ($divisions as $division) {
-                if ($division->AreaSeason == $conference->AreaSeason) {
-                    $this->data['thetable'] .= heading($division->League, 4, 'class="divisionHeading"');
+                if ($division->Conference == $conference->Conference) {
+                    $this->data['thetable'] .= heading($division->Division, 4, 'class="divisionHeading"');
                     $this->data['thetable'] .= $this->createTable($this->teams->some(
-                        'League', $division->League, $orderBy));
+                        'Division', $division->Division, $orderBy));
                 }
-                
             }
         }
     }
@@ -93,7 +92,20 @@ class League extends Application {
                                     anchor("/league/orderBy/name", "Name"),
                                     anchor("/league/orderBy/wins", "Wins"),
                                     anchor("/league/orderBy/losses", "Losses"),
-                                    "League");
+                                    "Ties",
+                                    "Division",
+                                    "Conference",
+                                    "For",
+                                    "Against",
+                                    "Net",
+                                    "Home",
+                                    "Road",
+                                    "Indiv",
+                                    "Conf",
+                                    "NonConf",
+                                    "Streak",
+                                    "Last 5"
+                                    );
 
         foreach($arr as $row) {
             $this->table->add_row(  img(array('src'=>'/assets/data/img/' . $row->TeamLogo)),
@@ -101,7 +113,20 @@ class League extends Application {
                                     $row->TeamName,
                                     $row->W,
                                     $row->L,
-                                    $row->League);
+                                    $row->T,
+                                    $row->Division,
+                                    $row->Conference,
+                                    $row->PF,
+                                    $row->PA,
+                                    $row->Net_Pts,
+                                    $row->Home,
+                                    $row->Road,
+                                    $row->Indiv,
+                                    $row->Conf,
+                                    $row->NonConf,
+                                    $row->Streak,
+                                    $row->Last_5
+                                    );
         }
 
         $parms = array(
@@ -136,7 +161,7 @@ class League extends Application {
                 $this->session->unset_userdata('groupBy');
                 break;
             case "CONFERENCE":
-                $this->session->set_userdata('groupBy', 'AreaSeason');
+                $this->session->set_userdata('groupBy', 'Conference');
                 break;
             case "DIVISION":
                 $this->session->set_userdata('groupBy', 'Division');
@@ -146,6 +171,13 @@ class League extends Application {
                 break;
         }
 
+        $this->index();
+    }
+
+
+    // 2015-12-02
+    function updateStandings() {
+        $this->teams->updateStandings();
         $this->index();
     }
 }

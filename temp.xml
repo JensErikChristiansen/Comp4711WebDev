@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE standings SYSTEM 'standings.dtd'>
+<standings asof="20150830">
+<!--    <team code="PIT"></team>     -->
+    <team code="ARI" conference="National Football Conference - 2015 Regular Season`" division="NFC West Team">
+        <fullname>Arizona Cardinals</fullname>
+        <totals>
+            <wins>7</wins>
+            <losses>2</losses>
+            <ties>0</ties>
+            <for>302</for>
+            <against>185</against>
+            <net>117</net>
+        </totals>
+        <breakdown>
+            <home>3-1</home>
+            <road>4-1</road>
+            <indiv>2-1</indiv>
+            <inconf>5-1</inconf>
+            <nonconf>2-1</nonconf>
+        </breakdown>
+        <recent>
+            <streak>3W</streak>
+            <last5>4-1</last5>
+        </recent>
+    </team>
+	<team code="SLR" conference="National Football Conference - 2015 Regular Season" division="NFC West Team">
+        <fullname>St. Louis Rams</fullname>
+        <totals>
+            <wins>7</wins>
+            <losses>2</losses>
+            <ties>0</ties>
+            <for>302</for>
+            <against>185</against>
+            <net>117</net>
+        </totals>
+        <breakdown>
+            <home>3-1</home>
+            <road>4-1</road>
+            <indiv>2-1</indiv>
+            <inconf>5-1</inconf>
+            <nonconf>2-1</nonconf>
+        </breakdown>
+        <recent>
+            <streak>3W</streak>
+            <last5>4-1</last5>
+        </recent>
+    </team>
+</standings>
