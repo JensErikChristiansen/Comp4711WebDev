@@ -31,7 +31,7 @@ and open the template in the editor.
                         <li><a href="/league">Standings</a></li>
                         <li><a href="/roster">Your Roster</a></li>
                         <li><a href="/about">About</a></li>
-                        <li><a href="/league/updateStandings">Update Standings</a></li>
+                        <li><a href="/History/updateStandings">Update Standings</a></li>
                         <li><a href="/roster/editMode">Edit Mode <span class="badge">{EditMode}</span></a></li>
                         <li><a href="/welcome/updateScores">Update Scores History</a></li>
                     </ul>

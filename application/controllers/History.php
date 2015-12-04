@@ -15,51 +15,84 @@ class History extends Application {
  //        $this->render();
 	// }
 
+    // 2015-12-02
+    // Fetch XML data and update standings table in db
     function updateStandings() {
-        $xml = simplexml_load_file('temp.xml');
+        $this->load->model('scores');
+        $allCodes = $this->teams->getGroups('Code');
 
-        $stuff = "";
+        // get team
+        foreach ($allCodes as $teamCode) {
+            $query = $this->scores->some('Code', $teamCode->Code, 'Date');
+            $team = $this->teams->getFromCode($teamCode->Code);
+            $team->W = 0;
+            $team->L = 0;
+            $team->PF = 0;
+            $team->PA = 0;
 
-        $team = $this->teams->create();
+            // calculate history for one team;
+            foreach($query as $row) {
+                if ($row->ScoreHome > $row->ScoreOpponent) {
+                    $team->W += 1;
+                } else {
+                    $team->L += 1;
+                }
 
-        foreach ($xml->team as $element) {
-            $team->Code = $element['code'];
-            $team->TeamName = $element->fullname;
-            $team->Conference = $element['conference'];
-            $team->Division = $element['division'];
+                $team->PF += $row->ScoreHome;
+                $team->PA += $row->ScoreOpponent;
 
-            // totals
-            $team->W = $element->totals->wins;
-            $team->L = $element->totals->losses;
-            $team->T = $element->totals->ties;
-            $team->PF = $element->totals->for;
-            $team->PA = $element->totals->against;
-            $team->Net_Pts = $element->totals->net;
-
-            // breakdown
-            $team->Home = $element->breakdown->home;
-            $team->Road = $element->breakdown->road;
-            $team->Indiv = $element->breakdown->indiv;
-            $team->Conf = $element->breakdown->inconf;
-            $team->NonConf = $element->breakdown->nonconf;
-
-            // recent
-            $team->Streak = $element->recent->streak;
-            $team->Last_5 = $element->recent->last5;
-
-            // update or add team to db
-            if ($this->teams->exists('Code', $team->Code)) {
-                $stuff .= 'exists<br>';
-                $this->teams->update($team);
-            } else {
-                $stuff .= "doesn't exist<br>";
-                $this->teams->add($team);
+                $team->Pct1 = $team->PF / ($team->PF + $team->PA);
             }
+
+            $this->getLast5($team->Code);
+
+            $this->teams->update($team);
         }
 
-        echo $stuff;
+    } // end updateStandings
 
+    public function getLast5($code){
+        $last_5 = array();
+        $last_5 = $this->scores->someDescending('Code', $code, 'Date', 5);
+        $num = count($last_5);
+
+        $total = 0;
+        foreach ($last_5 as $value) {
+           $total += $value->ScoreHome;
+        }
+
+        return $total/$num;
+
+       
+   }
+
+    // Return filtered records as an array of records
+    function someDescending($key, $value, $order, $limit) {
+       
+       $this->db->order_by($order, 'desc');
+       //$this->db->order_by($this->_keyField, 'asc');
+       $this->db->where($key, $value);
+       $query = $this->db->get($this->_tableName, $limit);
+       return $query->result();
     }
+   
+    function getAvgLast5($ourCode, $opponentCode){
+        $last_5 = array();
+        $last_5 = $this->someDescending('Code', $ourCode, 'Date', 5);
+        $num = count($last_5);
+
+        $total = 0;
+        foreach ($last_5 as $value) {
+           $homeScore = $value->ScoreHome;
+           $againstScore = $value->ScoreOpponent;
+           $total += $homeScore;      
+        }
+        $avgLast_5 = $total/$num;
+
+        var_dump($last_5);
+       
+       
+   }
 
 	
 }
