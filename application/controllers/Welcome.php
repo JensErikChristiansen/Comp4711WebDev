@@ -154,8 +154,8 @@ class Welcome extends Application {
             $nums = array();
             $row = array('id' => $value['number'], 'date' => $value['date'], 'code' => $value['home'], 'opponentCode' => $value['away'], 'score1' => $value['score'], 'score2' => $value['score']);
             $nums = explode(':',$row['score1']);
-            $row['score1'] = $nums[0];
-            $row['score2'] = $nums[1];
+            $row['score1'] = $nums[1];
+            $row['score2'] = $nums[0];
             $scores[] = $row;
             
             //getting the next ID
@@ -165,9 +165,9 @@ class Welcome extends Application {
              $newscore->ID = $scores_num;
              $newscore->Code = $value['home'];
              $newscore->Date = $value['date'];
-             $newscore->ScoreHome = $nums[0];
+             $newscore->ScoreHome = $nums[1];
              $newscore->OpponentCode = $value['away'];
-             $newscore->ScoreOpponent = $nums[1];
+             $newscore->ScoreOpponent = $nums[0];
             // var_dump($newscore);
              
              $this->scores->add($newscore);
@@ -177,9 +177,9 @@ class Welcome extends Application {
              $newscore1->ID = $scores_num + 1;
              $newscore1->Code = $value['away'];
              $newscore1->Date = $value['date'];
-             $newscore1->ScoreHome = $nums[1];
+             $newscore1->ScoreHome = $nums[0];
              $newscore1->OpponentCode = $value['home'];
-             $newscore1->ScoreOpponent = $nums[0];
+             $newscore1->ScoreOpponent = $nums[1];
             // var_dump($newscore);
              
              $this->scores->add($newscore1);
@@ -195,10 +195,14 @@ class Welcome extends Application {
                 echo "no Games are played!!! get DATA";
             }
             else{
-                //foreach($avgScore as $v){
-                //     echo $v;
-                 //}
-           
+                echo "start";
+                foreach($info as $v){
+                    
+                     echo $v;
+                     echo " ";
+                
+                }
+                     echo "end";
                  $this->teams->updateInfo($info, $codeValue);
             }
         }
