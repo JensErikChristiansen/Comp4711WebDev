@@ -178,9 +178,23 @@ class Welcome extends Application {
              $this->scores->add($newscore1);
                              
         }
+        //$this->teams->newStandings($allScores);
+        $allCodes = $this->teams->getAllCodes();
         
-        
-        
+        foreach ($allCodes as $codeValue) {
+            $info = array();
+            $info = $this->scores->getInfo($codeValue);
+            if($info == 0 ){
+                echo "no Games are played!!! get DATA";
+            }
+            else{
+                //foreach($avgScore as $v){
+                //     echo $v;
+                 //}
+           
+                 $this->teams->updateInfo($info, $codeValue);
+            }
+        }
         //echo count($scores);
         //sort($scores);
         $this->data['Scores'] = $scores;
