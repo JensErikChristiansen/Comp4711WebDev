@@ -12,7 +12,7 @@ class Welcome extends Application {
 		//$this->load->view('welcome');
         $this->data['pagebody'] = 'welcome';
         $this->data['Codes'] = $this->populateDropdown();
-        $this->data['Submit'] = makeSubmitButton('Predict', "Predict",
+        $this->data['Submit'] = makeSubmitButtonID('Predict', "Predict", "Predict2",
         'btn btn-default');
         $this->data['YourResults'] = "";
         $this->data['OpponentResults'] = "";
@@ -76,6 +76,13 @@ class Welcome extends Application {
 		$this->render();
 	}*/
 
+    function getPredict() {
+        // invoke the parser without third parameter, so results returned to browser
+        $this->parser->parse('show_results',array('message'=>"MESSAGE"));
+        
+    }
+    
+    
     function predict() {
         /* Jens is going to work on overall avg and last 5 games avg */
         

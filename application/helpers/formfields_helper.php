@@ -106,6 +106,32 @@ if (!function_exists('makeSubmitButton')) {
 
 }
 
+
+/**
+ * Make a submit button with id.
+ * 
+ * @param string $label Label to appear on the button
+ * @param string $title "Tooltip" text 
+ * @param string $css_extras Extra CSS class information
+ */
+if (!function_exists('makeSubmitButtonID')) {
+
+    function makeSubmitButtonID($label, $title, $id, $css_extras = "") {
+        $CI = &get_instance();
+        $parms = array(
+            'label' => $label,
+            'title' => $title,
+            'id' => $id,
+            'css_extras' => $css_extras,
+            
+        );
+        return $CI->parser->parse('_fields/submitID', $parms, true);
+    }
+
+}
+
+
+
 /**
  * Make a cancel button.
  * 
