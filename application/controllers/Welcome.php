@@ -98,10 +98,10 @@ class Welcome extends Application {
         ///--------Predict our points
         $avgAgainstOpponent = $this->scores->getAvgLast5Opponent($ourCode, $opponentCode);
         if($avgAgainstOpponent == 0){
-            $pointsUs = ((70 * $overallAvg) + (0.20 * $lastFive))/0.9;
+            $pointsUs = ((0.70 * $overallAvg) + (0.20 * $lastFive))/0.9;
         }
         else{
-            $pointsUs = (70 * $overallAvg) + (0.20 * $lastFive) + (0.10 * $avgAgainstOpponent);
+            $pointsUs = (0.70 * $overallAvg) + (0.20 * $lastFive) + (0.10 * $avgAgainstOpponent);
         }
         echo "Predict that Steelers will get:";
         echo $pointsUs;
@@ -113,10 +113,10 @@ class Welcome extends Application {
         $lastFiveOpponent = $this->scores->getAvgLast5($opponentCode); //different when standings updated
         $avgAgainstUs = $this->scores->getAvgLast5Opponent($opponentCode, $ourCode);
         if($avgAgainstUs == 0){
-            $pointsOpponent = ((70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent))/0.9;
+            $pointsOpponent = ((0.70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent))/0.9;
         }
         else{
-            $pointsOpponent = (70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent) + (0.10 * $avgAgainstUs);
+            $pointsOpponent = (0.70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent) + (0.10 * $avgAgainstUs);
         }
         echo "Predict that Opponents will get:";
         echo $pointsOpponent;
