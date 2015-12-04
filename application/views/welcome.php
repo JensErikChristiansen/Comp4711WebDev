@@ -1,6 +1,3 @@
-{Scores}
-<p> {id} {date} {code} {opponentCode} {score1} {score2} </p>
-{/Scores}
 <div class="jumbotron shadow">
 	<div class="container">
 	    <h1>NFL Predictor</h1>
@@ -17,13 +14,15 @@
 					<option value="{Code}">{Code} - {TeamName}</option>
 				{/Codes}
 			</select>
-			{Submit}
+                        {Submit}
 	    </form>
 	</div> <!-- end row -->
 	<h3 class="text-center">VS</h3>
+        <button class="btn btn-primary btn btn-default" type="submit" id="Predict1">Call Ajax</button>
 	{ResultsHeading}
     <div class="row">
 		<div class="col-sm-6">
+                <p id="meat"></p>
 	    	{YourResults}
 	    </div>
 	    <div class="col-sm-6">
@@ -32,6 +31,4 @@
 	</div>
 </div>
 
-<script>
-//ajax call here, calls Welcome->getPrediction;
-</script>
+<script src="/assets/js/predict.js"></script>
