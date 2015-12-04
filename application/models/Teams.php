@@ -103,4 +103,32 @@ class Teams extends MY_Model {
     function makeRequest() {
 
     }
+    
+    function getAllCodes(){
+        $allCodes = array();
+        $allCodes = $this->all();
+        $allReturnedCodes = array();
+        
+        foreach ($allCodes as $value) {
+            array_push($allReturnedCodes, $value -> Code);
+            //echo $allReturnedCodes;
+            echo " ";
+        }
+
+       
+        return $allReturnedCodes;
+    }
+    
+    function updateInfo($info, $code){
+        $team = $this->getFromCode($code);
+        $team->W = $info[0];
+        $team->L = $info[1];
+        $team->T = $info[2];
+        $team->PF = $info[3];
+        $team->PA = $info[4];
+        $team->Net_Pts = $info[3]- $info[4];
+        $team->Pct1 = $info[5];
+        
+        $this->update($team);
+    }
 }
