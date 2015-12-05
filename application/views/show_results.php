@@ -1,1 +1,1 @@
-<p>This is the message: {message}</p>
+<p>This is an Ajax called method: {message}</p>

@@ -18,7 +18,7 @@
 	    </form>
 	</div> <!-- end row -->
 	<h3 class="text-center">VS</h3>
-        <button class="btn btn-primary btn btn-default" type="submit" id="Predict1">Call Ajax</button>
+        <button class="btn btn-primary btn btn-default" type="submit" id="Predict1">Trying Ajax</button>
 	{ResultsHeading}
     <div class="row">
 		<div class="col-sm-6">
