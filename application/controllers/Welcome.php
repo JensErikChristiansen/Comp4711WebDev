@@ -78,7 +78,7 @@ class Welcome extends Application {
 
     function getPredict() {
         // invoke the parser without third parameter, so results returned to browser
-        $this->parser->parse('show_results',array('message'=>"MESSAGE"));
+        $this->parser->parse('show_results',array('message'=>"We couldn't get it working with our prediction"));
         
     }
     
@@ -110,8 +110,8 @@ class Welcome extends Application {
         else{
             $pointsUs = (0.70 * $overallAvg) + (0.20 * $lastFive) + (0.10 * $avgAgainstOpponent);
         }
-        echo "Predict that Steelers will get:";
-        echo $pointsUs;
+        $this->data['AveragePts'] = $pointsUs;
+        $this->data['TeamName'] = $ourCode;
         ///---------end Predict Our Points
         
         /////------------Predict Opponent points
@@ -125,9 +125,11 @@ class Welcome extends Application {
         else{
             $pointsOpponent = (0.70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent) + (0.10 * $avgAgainstUs);
         }
-        echo "Predict that Opponents will get:";
-        echo $pointsOpponent;
+        $this->data['AveragePtsOpponent'] = $pointsOpponent;
+        $this->data['OpponentTeamName'] = $opponentCode;
         //---------end Predict Opponent score
+        $this->data['pagebody'] = '_predictionResults';
+        $this->render();
     }
         
     function updateScores() {
@@ -195,14 +197,14 @@ class Welcome extends Application {
                 echo "no Games are played!!! get DATA";
             }
             else{
-                echo "start";
-                foreach($info as $v){
+                //echo "start"; **for testing purposes**
+                //foreach($info as $v){
                     
-                     echo $v;
-                     echo " ";
+                     //echo $v;
+                     //echo " ";
                 
-                }
-                     echo "end";
+                //}
+                     //echo "end";
                  $this->teams->updateInfo($info, $codeValue);
             }
         }
