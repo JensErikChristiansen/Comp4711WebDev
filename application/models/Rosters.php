@@ -7,9 +7,9 @@
  */
 
 /**
- * Description of Roster
+ * Description of Scores
  *
- * @author Nina
+ * @author Rosanna
  */
 class Rosters extends MY_Model {
 

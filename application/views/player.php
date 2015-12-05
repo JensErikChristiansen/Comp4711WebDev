@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-<div class="row">
-    <div class="col-xs-6 img-responsive thumbnail">
-        <img src="/assets/data/img/{Photo}">
+<div class="container">
+    <div class="col-xs-6 thumbnail">
+        <img src="/assets/data/img/{Photo}" class="playerViewThumb">
     </div>
     <div class="col-xs-6">
-        
-        <form action ="/Player/confirm/{ID}" method="post">
+        <div style="
+            color: red;
+            font-weight: bold;
+            font-size: 1.5em;
+            ">
+            {message}
+        </div>
+        <form action="/Player/validate" method="post">
             {Name}
             {PlayerNo}
             {Pos}
@@ -21,12 +21,9 @@ and open the template in the editor.
             {Birthdate}
             {Experience}
             {College}
-            {Code}            
-            {Submit}
-            {Cancel}
-            {Delete}
+            {Code}
+            <br>
+            {Submit}{Cancel}{Delete}
         </form>
     </div>
 </div>
-        
-

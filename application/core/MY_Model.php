@@ -103,7 +103,7 @@ interface Active_record {
      * @param   mixed   $which  Value sought.
      * @return mixed The selected records, as an array of records
      */
-    function some($what, $which);
+    function some($what, $which, $order);
 }
 
 /**
@@ -127,7 +127,7 @@ class MY_Model extends CI_Model implements Active_Record {
      * @param string $tablename Name of the RDB table
      * @param string $keyfield  Name of the primary key field
      */
-    function __construct($tablename = null, $keyfield = 'id') {
+    function __construct($tablename = null, $keyfield = 'ID') {
         parent::__construct();
 
         if ($tablename == null)
@@ -224,7 +224,12 @@ class MY_Model extends CI_Model implements Active_Record {
 
     // Determine if a key exists
     function exists($key, $key2 = null) {
-        $this->db->where($this->_keyField, $key);
+        if ($key2 === null) {
+            $this->db->where($this->_keyField, $key);
+        } else {
+            $this->db->where($key, $key2);
+        }
+        
         $query = $this->db->get($this->_tableName);
         if ($query->num_rows() < 1)
             return false;
@@ -256,12 +261,10 @@ class MY_Model extends CI_Model implements Active_Record {
     }
 
     // Return filtered records as an array of records
-    function some($what, $which) {
-        $this->db->order_by($this->_keyField, 'asc');
-        if (($what == 'period') && ($which < 9)) {
-            $this->db->where($what, $which); // special treatment for period
-        } else
-            $this->db->where($what, $which);
+    function some($key, $value, $order) {
+        $this->db->order_by($order, 'asc');
+        //$this->db->order_by($this->_keyField, 'asc');
+        $this->db->where($key, $value);
         $query = $this->db->get($this->_tableName);
         return $query->result();
     }
@@ -285,7 +288,7 @@ class MY_Model2 extends MY_Model {
 
     // Constructor
 
-    function __construct($tablename = null, $keyfield = 'id', $keyfield2 = 'part') {
+    function __construct($tablename = null, $keyfield = 'ID', $keyfield2 = null) {
         parent::__construct($tablename, $keyfield);
         $this->_keyField2 = $keyfield2;
     }

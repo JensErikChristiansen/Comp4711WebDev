@@ -12,29 +12,34 @@ and open the template in the editor.
         <title>{pagetitle}</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <!-- Latest compiled and minified JavaScript -->
+        <!-- Theme -->
+        <link rel="stylesheet" href="/css/custom.min.css">
+        <!-- our own stuff -->
+        <link rel="stylesheet" href="/css/app.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div id="header">
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">NFL</a>
+                    </div>
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/league">League</a></li>
-                        <li><a href="/roster">Roster</a></li>
+                        <li><a href="/league">Standings</a></li>
+                        <li><a href="/roster">Your Roster</a></li>
                         <li><a href="/about">About</a></li>
-                        <li><a href="/roster/editMode">Edit Mode</a></li>
+                        <!--<li><a href="/league/updateStandings">Update Standings</a></li>-->
+                        <li><a href="/roster/editMode">Edit Mode <span class="badge">{EditMode}</span></a></li>
+                        <li><a href="/welcome/updateScores">Update Scores History</a></li>
                     </ul>
                 </div>
             </nav>
        </div>
        <div id="content">
-            <div class="container">
-             {content}
-            </div>
+            {content}
         </div>
     </body>
 </html>

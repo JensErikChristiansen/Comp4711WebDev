@@ -1,0 +1,1 @@
+<p>This is an Ajax called method: {message}</p>
