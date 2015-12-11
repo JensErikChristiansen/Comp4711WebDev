@@ -8,25 +8,22 @@
 		<div class="col-sm-6 text-center">
 			<h4>Your Team: Steelers</h4>
 		</div>
-	    <form class="col-sm-6 text-center" name="predictionForm" id="predictionForm" action="/welcome/predict" method="post">
+	    <form class="col-sm-6 text-center" onsubmit="return false;" name="predictionForm" id="predictionForm" method="post">
 			<select id="codeSelect" name="codeSelect" style="width: 15em; margin-right: 20px;">
 				{Codes}
 					<option value="{Code}">{Code} - {TeamName}</option>
 				{/Codes}
 			</select>
-                        {Submit}
+			<button class="btn btn-primary btn btn-default" id="predictButton">Predict</button>
 	    </form>
+
 	</div> <!-- end row -->
 	<h3 class="text-center">VS</h3>
-        <button class="btn btn-primary btn btn-default" type="submit" id="Predict1">Trying Ajax</button>
-	{ResultsHeading}
+
     <div class="row">
-		<div class="col-sm-6">
-                <p id="meat"></p>
-	    	{YourResults}
+		<div class="col-sm-6" id="yourResults">
 	    </div>
-	    <div class="col-sm-6">
-	    	{OpponentResults}
+	    <div class="col-sm-6" id="opponentResults">
 	    </div>
 	</div>
 </div>

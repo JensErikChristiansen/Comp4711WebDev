@@ -2,18 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Steelers Website for educational purposes.
- * Authors: Pair Programming Rosanna and Nadia adding the Welcome homepage
+ * Authors: Pair Programming Rosanna and Nadia adding the Welcome homepage and predictions
+ * Jens implementing Ajax and presentation/styling
  */
 class Welcome extends Application {
 
 	function __construct() {
 		parent::__construct();
 		$this->session->set_userdata('editPage', '/welcome');
-		//$this->load->view('welcome');
         $this->data['pagebody'] = 'welcome';
         $this->data['Codes'] = $this->populateDropdown();
-        $this->data['Submit'] = makeSubmitButtonID('Predict', "Predict", "Predict2",
-        'btn btn-default');
+        //$this->data['Submit'] = makeSubmitButtonID('Predict', "Predict", "Predict2",'btn btn-default');
         $this->data['YourResults'] = "";
         $this->data['OpponentResults'] = "";
         $this->data['ResultsHeading'] = "";
@@ -36,71 +35,30 @@ class Welcome extends Application {
         $codes = array_values($codes);
 
         return $codes;
-
-        // $this->data['Dropdown'] = makeComboField(
-        //     'Code', // label
-        //     "Code", //name
-        //     0, //value
-        //     $codes, //options
-        //     "", // explain
-        //     40, //maxlen
-        //     15, //size
-        //     false //disabled
-        // );
 	}
 
-    
-	/*function predict() {
-
-		$this->data['ResultsHeading'] = heading("Results", 2, 'class="text-center bg-danger"');
-
-		// Gather Steelers data
-		$steelers = $this->teams->getFromCode('PIT');
-		$overallAvg = $steelers->Pct1;
-		$fiveGameAvg = (float)$steelers->Last_5 / 5;
-		$steelers->FiveGameAvg = $fiveGameAvg;
-		$this->data['YourResults'] = $this->parser->parse('_predictionResults', $steelers, true);
-
-		// Gather opponent data
-		$code = $_POST['codeSelect'];
-		$opponent = $this->teams->getFromCode($code);
-		$overallAvg = $opponent->Pct1;
-		//(float)substr(strstr($last5String, "-", false), 1)
-		$fiveGameAvg = (float)$opponent->Last_5 / 5;
-		$opponent->FiveGameAvg = $fiveGameAvg;
-		$this->data['OpponentResults'] = $this->parser->parse('_predictionResults', $opponent, true);
-
-		//70% * (overall average)
-		// + 20% * (last 5 games average) 
-		// + 10% * (average of last 5 games against this opponent)
-		$this->render();
-	}*/
-
-    function getPredict() {
-        // invoke the parser without third parameter, so results returned to browser
-        $this->parser->parse('show_results',array('message'=>"We couldn't get it working with our prediction"));
-        
+    function getPredict($item) {
+        $this->predict($item);
+        $array = array(
+            0 => $this->parser->parse('_predictionResults', $this->data['OurTeamArray'], true),
+            1 => $this->parser->parse('_predictionResults', $this->data['OpponentArray'], true),
+        );
+        echo json_encode($array);
     }
     
     
-    function predict() {
-        /* Jens is going to work on overall avg and last 5 games avg */
-        
+    function predict($opponentCode) {
+        $this->data['ResultsHeading'] = heading("Results", 2, 'class="text-center bg-danger"');        
         
         //---- get PIT overall average and get PIT last 5 games average
         //Our Team
         $ourCode = "PIT";
         $steelersStandings = $this->teams->getFromCode($ourCode);
         $overallAvg = $steelersStandings->Pct1;
-        //$lastFive = $steelersStandings->Last_5; use this one when standigns are fixed;
         //----end get PIT overall average and last 5 games
         
         $this->load->model('scores');
-        //change this later to get from standings
         $lastFive = $this->scores->getAvgLast5($ourCode);
-
-        // Gather opponent code from dropdown
-        $opponentCode = $_POST['codeSelect'];
         
         ///--------Predict our points
         $avgAgainstOpponent = $this->scores->getAvgLast5Opponent($ourCode, $opponentCode);
@@ -110,9 +68,11 @@ class Welcome extends Application {
         else{
             $pointsUs = (0.70 * $overallAvg) + (0.20 * $lastFive) + (0.10 * $avgAgainstOpponent);
         }
-        $this->data['AveragePts'] = $pointsUs;
-        $this->data['TeamName'] = $ourCode;
-        ///---------end Predict Our Points
+
+        $ourTeam = array('TeamName' => $ourCode, 'AveragePts' => $pointsUs);
+
+        $this->data['OurTeamArray'] = $ourTeam;
+        ///---------end Prediction for Our Team
         
         /////------------Predict Opponent points
         $opponentStandings = $this->teams->getFromCode($opponentCode);
@@ -125,11 +85,9 @@ class Welcome extends Application {
         else{
             $pointsOpponent = (0.70 * $overallOpponentAvg) + (0.20 * $lastFiveOpponent) + (0.10 * $avgAgainstUs);
         }
-        $this->data['AveragePtsOpponent'] = $pointsOpponent;
-        $this->data['OpponentTeamName'] = $opponentCode;
-        //---------end Predict Opponent score
-        $this->data['pagebody'] = '_predictionResults';
-        $this->render();
+
+        $opponent = array('TeamName' => $opponentCode, 'AveragePts' => $pointsOpponent);
+        $this->data['OpponentArray'] = $opponent;
     }
         
     function updateScores() {
@@ -197,19 +155,9 @@ class Welcome extends Application {
                 echo "no Games are played!!! get DATA";
             }
             else{
-                //echo "start"; **for testing purposes**
-                //foreach($info as $v){
-                    
-                     //echo $v;
-                     //echo " ";
-                
-                //}
-                     //echo "end";
                  $this->teams->updateInfo($info, $codeValue);
             }
         }
-        //echo count($scores);
-        //sort($scores);
         $this->data['Scores'] = $scores;
         // Present the list to choose from
         $this->data['pagebody'] = 'welcome';

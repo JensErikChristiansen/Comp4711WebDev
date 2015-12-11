@@ -5,14 +5,16 @@
  */
 
 
-$('#Predict1').click(function () {
+$("#predictButton").click(function () {
     $.ajax({
-        url: "/welcome/getPredict",
+        url: "/welcome/getPredict/" + $("#codeSelect").val(),
         success: function (result) {
-            $('#meat').html(result);
+        	var json = JSON.parse(result);
+            $("#yourResults").html(json[0]);
+            $("#opponentResults").html(json[1]);
         },
         error: function (xhr) {
-            $('#meat').html('Oh no!! ' + xhr.status + ' ' + xhr.statusText);
+            $("#meat").html("Oh no!! " + xhr.status + " " + xhr.statusText);
         }
     });
 });
